@@ -1,20 +1,94 @@
 'use client'
+import { Note, Errors } from '@/interfaces/noteInterfaces'
 import CardButton from './cardButton'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import CardColorButton from './cardColorButton'
 
 interface Card {
-  color: string
-  favorited: boolean
+  note: Note
+  emptyNote: Note
+  setNotes: Dispatch<SetStateAction<Note[]>>
+  setErrors: Dispatch<
+    SetStateAction<Errors['errors']>
+  >
+  setMessage: Dispatch<SetStateAction<string>>
+  setShowRestore: Dispatch<
+    SetStateAction<{
+      visible: boolean
+      note: Note
+    }>
+  >
+  noteUpdate: (
+    note: Note,
+    setNotes: Card['setNotes'],
+    setErrors: Card['setErrors'],
+    setMessage: Card['setMessage']
+  ) => void
+  noteDestroy: (
+    id: string,
+    setNotes: Card['setNotes'],
+    setMessage: Card['setMessage']
+  ) => void
 }
 
 export default function Card({
-  color,
-  favorited,
+  note,
+  emptyNote,
+  setNotes,
+  setErrors,
+  setMessage,
+  noteUpdate,
+  noteDestroy,
+  setShowRestore,
 }: Card) {
-  
+  const [colorPick, setColorPick] = useState(false)
+  const [readOnly, setReadOnly] = useState(true)
+  const [editedNote, setEditedNote] = useState<Note>(emptyNote)
 
+  useEffect(() => {
+    setEditedNote(note)
+  }, [note])
 
-  const colorList = [
+  function OnClickButton(
+    type: 'edit' | 'color' | 'favorite' | 'delete' | 'save'
+  ) {
+    if (type === 'edit') {
+      if (!readOnly) {
+        noteUpdate(
+          { ...note, title: editedNote.title, body: editedNote.body },
+          setNotes,
+          setErrors,
+          setMessage
+        )
+      }
+      setReadOnly(!readOnly)
+    }
+    if (type === 'color') setColorPick(!colorPick)
+    if (type === 'favorite')
+      noteUpdate(
+        { ...note, favorited: !note.favorited },
+        setNotes,
+        setErrors,
+        setMessage
+      )
+    if (type === 'delete') {
+      noteDestroy(note.id, setNotes, setMessage)
+      setShowRestore({ visible: true, note: editedNote })
+    }
+  }
+
+  function editColor(color: Note['color']) {
+    const whiteColorCheck = color === note.color ? 'white' : color
+    noteUpdate(
+      { ...note, color: whiteColorCheck },
+      setNotes,
+      setErrors,
+      setMessage
+    )
+    setColorPick(!colorPick)
+  }
+
+  const colorList: Note['color'][] = [
     'blue',
     'teal',
     'yellow',
@@ -23,7 +97,7 @@ export default function Card({
     'sky',
   ]
 
-  const colorList2 = [
+  const colorList2: Note['color'][] = [
     'pink',
     'lime',
     'orange',
@@ -33,48 +107,66 @@ export default function Card({
   ]
 
   const titleBorder =
-    color !== 'white' ? 'border-white' : 'border-gray-400'
-  const getIconFavorited = favorited
+    note.color !== 'white' ? 'border-white' : 'border-gray-400'
+  const getIconFavorited = note.favorited
     ? '/icons/star_fill.svg'
     : '/icons/star.svg'
+  const getIconEdit = readOnly ? '/icons/edit.svg' : '/icons/save.svg'
   return (
     <div className={'flex flex-col'}>
       <div
-        className={`m-5 flex h-96 w-80 flex-col rounded-2xl shadow-md ${`bg-card-${color}`}`}
+        className={`m-5 flex h-96 w-80 flex-col rounded-2xl shadow-md ${`bg-card-${note.color}`} ${readOnly ? '' : 'border border-gray-400'} `}
       >
         <div className={`flex items-start border-b ${titleBorder} `}>
           <input
             className={`grow resize-none rounded-tl-2xl px-3 py-2 font-semibold outline-none`}
-            readOnly={true}
+            value={editedNote.title}
+            readOnly={readOnly}
+            onChange={(e) =>
+              setEditedNote({ ...editedNote, title: e.target.value })
+            }
           />
           <CardButton
             icon={getIconFavorited}
             className={'mx-3 my-2 h-auto w-5'}
+            type={'favorite'}
+            onClickButton={OnClickButton}
           />
         </div>
         <textarea
           className={`grow resize-none px-3 py-2 outline-none`}
-          readOnly={true}
+          value={editedNote.body}
+          readOnly={readOnly}
+          onChange={(e) =>
+            setEditedNote({ ...editedNote, body: e.target.value })
+          }
         />
         <div className={'flex items-center px-3 py-2'}>
           <div className={'grow'}>
             <CardButton
-              icon={'/icons/edit.svg'}
+              icon={getIconEdit}
               className={'h-auto w-5'}
+              type={'edit'}
+              onClickButton={OnClickButton}
             />
             <CardButton
               icon={'/icons/paint.svg'}
               className={'h-auto w-5'}
+              type={'color'}
+              onClickButton={OnClickButton}
             />
           </div>
           <div>
             <CardButton
               icon={'/icons/delete.svg'}
               className={'h-auto w-4'}
+              type={'delete'}
+              onClickButton={OnClickButton}
             />
           </div>
         </div>
       </div>
+      {colorPick ? (
         <div
           className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 rounded-2xl bg-white p-1 shadow-md`}
         >
@@ -85,6 +177,7 @@ export default function Card({
                   <CardColorButton
                     key={key}
                     color={color}
+                    editColor={editColor}
                   />
                 )
             })}
@@ -96,11 +189,15 @@ export default function Card({
                   <CardColorButton
                     key={key}
                     color={color}
+                    editColor={editColor}
                   />
                 )
             })}
           </div>
         </div>
+      ) : (
+        false
+      )}
     </div>
   )
 }
