@@ -4,34 +4,19 @@ import { Dispatch, SetStateAction } from 'react'
 
 interface ColorFilter {
   setColor: Dispatch<SetStateAction<Note['color'] | 'all'>>
+  colors: Note['color'][]
 }
 
-export default function ColorFilter({ setColor }: ColorFilter) {
+export default function ColorFilter({ setColor, colors }: ColorFilter) {
   function editColor(color: Note['color'] | 'all') {
     setColor(color)
   }
 
-  const colorList: Note['color'][] = [
-    'white',
-    'blue',
-    'teal',
-    'yellow',
-    'salmon',
-    'red',
-    'sky',
-    'pink',
-    'lime',
-    'orange',
-    'cloud',
-    'gray',
-    'brown',
-  ]
+  const colorList = Array.from(new Set(colors).values())
+  
   return (
     <div
-      className={
-        `flex items-center justify-center rounded-2xl md:rounded-md
-        bg-white px-1 pb-1 shadow-md w-80 md:w-auto`
-      }
+      className={`flex w-80 items-center rounded-2xl bg-white px-2 pb-1 shadow-md md:w-auto md:rounded-md`}
     >
       <label className={'text-md mx-1 mt-1 text-gray-500'}>Filtrar: </label>
       <div className={'flex flex-wrap items-center'}>
@@ -42,9 +27,10 @@ export default function ColorFilter({ setColor }: ColorFilter) {
             customSize={'h-6 w-6'}
           />
         </div>
-        {colorList.map((color, key) => {
+        {colorList.map((color, key, array) => {
+          const margin = key + 1 !== array.length ? 'mr-1' : ''
           return (
-            <div key={key} className={`mr-1`}>
+            <div key={key} className={margin}>
               <CardColorButton
                 color={color}
                 editColor={editColor}

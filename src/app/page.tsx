@@ -45,6 +45,8 @@ export default function Login() {
     ? '/icons/star_fill.svg'
     : '/icons/star.svg'
 
+  const colors = notes.map((note) => note.color)
+
   function OnClickCardButton(
     type: 'edit' | 'color' | 'favorite' | 'delete' | 'save'
   ) {
@@ -122,9 +124,11 @@ export default function Login() {
                   />
                 </a>
               </div>
-              <label className={' mr-2 text-md text-gray-500'}>CoreNotes</label>
+              <label className={'text-md mr-2 text-gray-500'}>CoreNotes</label>
             </div>
-            <div className={'my-1 w-48 sm:w-80 flex shadow-md md:w-lg lg:w-2xl'}>
+            <div
+              className={'my-1 flex w-48 shadow-md sm:w-80 md:w-lg lg:w-2xl'}
+            >
               <input
                 type={'text'}
                 className={`w-full rounded-l-sm border-y-2 border-l-2 border-gray-300 px-3 py-1 outline-none`}
@@ -234,12 +238,17 @@ export default function Login() {
               </div>
             </div>
           </div>
-
-          <div
-            className={'mt-7 ml-0 flex justify-center md:ml-5 md:justify-start'}
-          >
-            <ColorFilter setColor={setColor} />
-          </div>
+          {new Set(colors).size > 1 ? (
+            <div
+              className={
+                'mt-7 ml-0 flex justify-center md:ml-5 md:justify-start'
+              }
+            >
+              <ColorFilter setColor={setColor} colors={colors} />
+            </div>
+          ) : (
+            false
+          )}
 
           <div>
             <div className={'flex flex-col items-center md:items-start'}>
