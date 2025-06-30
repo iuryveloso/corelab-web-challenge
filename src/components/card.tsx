@@ -112,6 +112,8 @@ export default function Card({
     ? '/icons/star_fill.svg'
     : '/icons/star.svg'
   const getIconEdit = readOnly ? '/icons/edit.svg' : '/icons/save.svg'
+  const getEditBackground = !readOnly ? 'bg-orange-300 rounded-full': ''
+  const getColorBackground = colorPick ? 'bg-orange-300 rounded-full': ''
   return (
     <div className={'flex flex-col'}>
       <div
@@ -141,17 +143,17 @@ export default function Card({
             setEditedNote({ ...editedNote, body: e.target.value })
           }
         />
-        <div className={'flex items-center px-3 py-2'}>
+        <div className={'flex items-center px-3 pt-2'}>
           <div className={'grow'}>
             <CardButton
               icon={getIconEdit}
-              className={'h-auto w-5'}
+              className={`h-auto w-7 p-1 ${getEditBackground}`}
               type={'edit'}
               onClickButton={OnClickButton}
             />
             <CardButton
               icon={'/icons/paint.svg'}
-              className={'h-auto w-5'}
+              className={`h-auto w-7 p-1 ${getColorBackground}`}
               type={'color'}
               onClickButton={OnClickButton}
             />
@@ -159,7 +161,7 @@ export default function Card({
           <div>
             <CardButton
               icon={'/icons/delete.svg'}
-              className={'h-auto w-4'}
+              className={'h-auto w-4 mr-1'}
               type={'delete'}
               onClickButton={OnClickButton}
             />
@@ -168,29 +170,31 @@ export default function Card({
       </div>
       {colorPick ? (
         <div
-          className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 rounded-md bg-white p-1 shadow-md`}
+          className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 lg:h-auto lg:w-120 lg:-mr-40 rounded-md bg-white p-1 shadow-md`}
         >
-          <div className={'mb-2 flex justify-between'}>
-            {colorList.map((color, key) => {
-              return (
-                <CardColorButton
-                  key={key}
-                  color={color}
-                  editColor={editColor}
-                />
-              )
-            })}
-          </div>
-          <div className={'flex justify-between'}>
-            {colorList2.map((color, key) => {
-              return (
-                <CardColorButton
-                  key={key}
-                  color={color}
-                  editColor={editColor}
-                />
-              )
-            })}
+          <div className={'lg:flex lg:flex-wrap'}>
+            <div className={'mb-2 lg:mb-0 lg:mr-2 flex lg:grow justify-between'}>
+              {colorList.map((color, key) => {
+                return (
+                  <CardColorButton
+                    key={key}
+                    color={color}
+                    editColor={editColor}
+                  />
+                )
+              })}
+            </div>
+            <div className={'flex lg:grow justify-between'}>
+              {colorList2.map((color, key) => {
+                return (
+                  <CardColorButton
+                    key={key}
+                    color={color}
+                    editColor={editColor}
+                  />
+                )
+              })}
+            </div>
           </div>
         </div>
       ) : (
