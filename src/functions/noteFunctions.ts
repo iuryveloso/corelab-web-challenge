@@ -22,6 +22,13 @@ export function noteSearch(search: string, notes: Note[]) {
   })
 }
 
+export function noteColorSearch(color: Note['color'] | 'all', notes: Note[]) {
+  return notes.filter((note) => {
+    if (color !== 'all') return note.color.includes(color)
+    return notes
+  })
+}
+
 export async function noteIndex(setNotes: NoteFunctions['setNotes']) {
   await index().then((data) => {
     setNotes(data)

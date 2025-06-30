@@ -8,9 +8,7 @@ interface Card {
   note: Note
   emptyNote: Note
   setNotes: Dispatch<SetStateAction<Note[]>>
-  setErrors: Dispatch<
-    SetStateAction<Errors['errors']>
-  >
+  setErrors: Dispatch<SetStateAction<Errors['errors']>>
   setMessage: Dispatch<SetStateAction<string>>
   setShowRestore: Dispatch<
     SetStateAction<{
@@ -77,15 +75,17 @@ export default function Card({
     }
   }
 
-  function editColor(color: Note['color']) {
-    const whiteColorCheck = color === note.color ? 'white' : color
-    noteUpdate(
-      { ...note, color: whiteColorCheck },
-      setNotes,
-      setErrors,
-      setMessage
-    )
-    setColorPick(!colorPick)
+  function editColor(color: Note['color'] | 'all') {
+    if (color !== 'all') {
+      const whiteColorCheck = color === note.color ? 'white' : color
+      noteUpdate(
+        { ...note, color: whiteColorCheck },
+        setNotes,
+        setErrors,
+        setMessage
+      )
+      setColorPick(!colorPick)
+    }
   }
 
   const colorList: Note['color'][] = [
@@ -168,30 +168,28 @@ export default function Card({
       </div>
       {colorPick ? (
         <div
-          className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 rounded-2xl bg-white p-1 shadow-md`}
+          className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 rounded-md bg-white p-1 shadow-md`}
         >
           <div className={'mb-2 flex justify-between'}>
             {colorList.map((color, key) => {
-              if (color)
-                return (
-                  <CardColorButton
-                    key={key}
-                    color={color}
-                    editColor={editColor}
-                  />
-                )
+              return (
+                <CardColorButton
+                  key={key}
+                  color={color}
+                  editColor={editColor}
+                />
+              )
             })}
           </div>
           <div className={'flex justify-between'}>
             {colorList2.map((color, key) => {
-              if (color)
-                return (
-                  <CardColorButton
-                    key={key}
-                    color={color}
-                    editColor={editColor}
-                  />
-                )
+              return (
+                <CardColorButton
+                  key={key}
+                  color={color}
+                  editColor={editColor}
+                />
+              )
             })}
           </div>
         </div>

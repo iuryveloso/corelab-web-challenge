@@ -5,6 +5,7 @@ import {
   noteDestroy,
   noteStore,
   noteSearch,
+  noteColorSearch,
   noteRestore,
 } from '@/functions/noteFunctions'
 import { Errors, Note } from '@/interfaces/noteInterfaces'
@@ -12,6 +13,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Card from '@/components/card'
 import CardButton from '@/components/cardButton'
+import ColorFilter from '@/components/colorFilter'
 
 export default function Login() {
   const emptyNote: Note = {
@@ -22,6 +24,7 @@ export default function Login() {
     favorited: false,
   }
 
+  const [color, setColor] = useState<Note['color'] | 'all'>('all')
   const [search, setSearch] = useState('')
   const [errors, setErrors] = useState<Errors['errors']>([])
   const [showErrors, setShowErrors] = useState(false)
@@ -77,9 +80,13 @@ export default function Login() {
   }, [])
 
   useEffect(() => {
-    if (search) setShownNotes(noteSearch(search, notes))
-    else setShownNotes(notes)
-  }, [notes, search])
+    const hasColor = color !== 'all'
+    if (search && hasColor)
+      setShownNotes(noteColorSearch(color, noteSearch(search, notes)))
+    if (!search && hasColor) setShownNotes(noteColorSearch(color, notes))
+    if (search && !hasColor) setShownNotes(noteSearch(search, notes))
+    if (!search && !hasColor) setShownNotes(notes)
+  }, [notes, search, color])
 
   function hasFavorited() {
     return (
@@ -125,7 +132,7 @@ export default function Login() {
               <div className={'flex w-80 shadow-md lg:w-2xl'}>
                 <input
                   type={'text'}
-                  className={`w-full rounded-l-sm border-l-2 border-y-2 border-gray-300 px-3 py-1 outline-none`}
+                  className={`w-full rounded-l-sm border-y-2 border-l-2 border-gray-300 px-3 py-1 outline-none`}
                   value={search}
                   placeholder={'Pesquisar notas'}
                   onChange={(e) => {
@@ -148,7 +155,6 @@ export default function Login() {
           </nav>
         </div>
       </div>
-
       <div className={'mt-28 sm:mt-16'}>
         <div className={'relative z-0'}>
           <div className={'fixed inset-y-14 right-0 z-10 mr-2'}>
@@ -228,10 +234,15 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className={'flex flex-wrap justify-center'}>
+
+        <div className={'mt-5 flex justify-center'}>
+          <ColorFilter setColor={setColor} />
+        </div>
+
+        <div className={'flex flex-col justify-center'}>
           <div>
             {hasFavorited() ? (
-              <div className={'mt-5 text-center'}>
+              <div className={'mt-3 text-center'}>
                 <h3 className={'text-xl'}>Favoritos</h3>
               </div>
             ) : (
@@ -260,7 +271,7 @@ export default function Login() {
           </div>
           <div>
             {hasOther() ? (
-              <div className={'mt-5 text-center'}>
+              <div className={'mt-3 text-center'}>
                 <h3 className={'text-xl'}>Outros</h3>
               </div>
             ) : (
