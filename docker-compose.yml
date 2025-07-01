@@ -1,0 +1,19 @@
+services:
+  web:
+    image: corenote_web
+    container_name: corenote-web
+    restart: unless-stopped
+    build:
+      context: .
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - PORT=${PORT}
+    networks:
+      - corenote_api
+    command: bash -c "npm run start"
+networks:
+  corenote_api:
+    driver: bridge
+volumes:
+  mysql_data:
