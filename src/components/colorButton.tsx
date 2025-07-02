@@ -1,12 +1,12 @@
 import { Note } from '@/interfaces/noteInterfaces'
 
-interface CardColorButton {
+interface ColorButton {
   color: Note['color'] | 'all'
   editColor: (color: Note['color'] | 'all') => void
   customSize?: string
 }
 
-export default function CardColorButton({color, editColor, customSize }: CardColorButton) {
+export default function ColorButton({color, editColor, customSize }: ColorButton) {
   const size = customSize ? customSize : 'h-8 w-8'
 
   const border = color === 'white' ? 'border border-gray-300  rounded-full' : ''

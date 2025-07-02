@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import Card from '@/components/card'
 import CardButton from '@/components/cardButton'
 import ColorFilter from '@/components/colorFilter'
+import Link from 'next/link'
 
 export default function Login() {
   const emptyNote: Note = {
@@ -114,7 +115,7 @@ export default function Login() {
           >
             <div className={'flex items-center'}>
               <div className={'mr-1'}>
-                <a href="/dashboard">
+                <Link href="/">
                   <Image
                     src={'/logo.svg'}
                     width={35}
@@ -122,7 +123,7 @@ export default function Login() {
                     alt={'Main logo'}
                     priority={true}
                   />
-                </a>
+                </Link>
               </div>
               <label className={'text-md mr-2 text-gray-500'}>CoreNotes</label>
             </div>

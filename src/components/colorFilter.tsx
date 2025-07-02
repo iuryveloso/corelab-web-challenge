@@ -1,5 +1,5 @@
 import { Note } from '@/interfaces/noteInterfaces'
-import CardColorButton from './cardColorButton'
+import ColorButton from './colorButton'
 import { Dispatch, SetStateAction } from 'react'
 
 interface ColorFilter {
@@ -21,7 +21,7 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
       <label className={'text-md mx-1 mt-1 text-gray-500'}>Filtrar: </label>
       <div className={'flex flex-wrap items-center'}>
         <div className={'mr-1'}>
-          <CardColorButton
+          <ColorButton
             color={'all'}
             editColor={editColor}
             customSize={'h-6 w-6'}
@@ -31,7 +31,7 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
           const margin = key + 1 !== array.length ? 'mr-1' : ''
           return (
             <div key={key} className={margin}>
-              <CardColorButton
+              <ColorButton
                 color={color}
                 editColor={editColor}
                 customSize={'h-6 w-6'}

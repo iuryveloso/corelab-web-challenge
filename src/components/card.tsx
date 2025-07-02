@@ -2,7 +2,7 @@
 import { Note, Errors } from '@/interfaces/noteInterfaces'
 import CardButton from './cardButton'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import CardColorButton from './cardColorButton'
+import ColorButton from './colorButton'
 
 interface Card {
   note: Note
@@ -176,7 +176,7 @@ export default function Card({
             <div className={'mb-2 lg:mb-0 lg:mr-2 flex lg:grow justify-between'}>
               {colorList.map((color, key) => {
                 return (
-                  <CardColorButton
+                  <ColorButton
                     key={key}
                     color={color}
                     editColor={editColor}
@@ -187,7 +187,7 @@ export default function Card({
             <div className={'flex lg:grow justify-between'}>
               {colorList2.map((color, key) => {
                 return (
-                  <CardColorButton
+                  <ColorButton
                     key={key}
                     color={color}
                     editColor={editColor}
