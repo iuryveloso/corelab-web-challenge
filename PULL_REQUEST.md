@@ -31,8 +31,8 @@
 
 2. Clone the [APP](https://github.com/iuryveloso/corelab-web-challenge) repository.
 
-3. Create a copy of the ".env.example" file in the app's root folder. Rename it to ".env" and change the necessary information.
+3. Create a copy of the ```.env.example``` file in the app's root folder. Rename it to ```.env``` and change the necessary information.
 
 4. Open the terminal and run the command ```docker compose up -d```.
 
-5. Finally, open your browser and go to [http://localhost:3000](http://localhost:3000). Enjoy!
+5. Finally, open your browser and go to http://localhost:3000. Enjoy!
