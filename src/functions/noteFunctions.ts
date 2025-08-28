@@ -29,8 +29,8 @@ export function noteColorSearch(color: Note['color'] | 'all', notes: Note[]) {
   })
 }
 
-export async function noteIndex(setNotes: NoteFunctions['setNotes']) {
-  await index().then((data) => {
+export async function noteIndex(setNotes: NoteFunctions['setNotes'], token: string) {
+  await index(token).then((data) => {
     setNotes(data)
   })
 }
@@ -39,21 +39,22 @@ export async function noteStore(
   note: Note,
   setNotes: NoteFunctions['setNotes'],
   setErrors: NoteFunctions['setErrors'],
-  setMessage: NoteFunctions['setMessage']
+  setMessage: NoteFunctions['setMessage'],
+  token: string
 ) {
   const { body, color, favorited, title } = note
-  await store(title, body, color, favorited).then((data) => {
+  await store(title, body, color, favorited, token).then((data) => {
     if (isErrors(data)) {
       setErrors(data.errors)
       return
     }
-    noteIndex(setNotes)
+    noteIndex(setNotes, token)
     setMessage(data.message)
   })
 }
 
-export async function noteShow(id: string, setNote: NoteFunctions['setNote']) {
-  await show(id).then((data) => {
+export async function noteShow(id: string, setNote: NoteFunctions['setNote'], token: string) {
+  await show(id, token).then((data) => {
     setNote(data)
   })
 }
@@ -62,15 +63,16 @@ export async function noteUpdate(
   note: Note,
   setNotes: NoteFunctions['setNotes'],
   setErrors: NoteFunctions['setErrors'],
-  setMessage: NoteFunctions['setMessage']
+  setMessage: NoteFunctions['setMessage'],
+  token: string
 ) {
   const { id, body, color, favorited, title } = note
-  await update(id, title, body, color, favorited).then((data) => {
+  await update(id, title, body, color, favorited, token).then((data) => {
     if (isErrors(data)) {
       setErrors(data.errors)
       return
     }
-    noteIndex(setNotes)
+    noteIndex(setNotes, token)
     setMessage(data.message)
   })
 }
@@ -78,10 +80,11 @@ export async function noteUpdate(
 export async function noteDestroy(
   id: string,
   setNotes: NoteFunctions['setNotes'],
-  setMessage: NoteFunctions['setMessage']
+  setMessage: NoteFunctions['setMessage'],
+  token: string
 ) {
-  await destroy(id).then((data) => {
-    noteIndex(setNotes)
+  await destroy(id, token).then((data) => {
+    noteIndex(setNotes, token)
     setMessage(data.message)
   })
 }
@@ -89,10 +92,11 @@ export async function noteDestroy(
 export async function noteRestore(
   id: string,
   setNotes: NoteFunctions['setNotes'],
-  setMessage: NoteFunctions['setMessage']
+  setMessage: NoteFunctions['setMessage'],
+  token: string
 ) {
-  await restore(id).then((data) => {
-    noteIndex(setNotes)
+  await restore(id, token).then((data) => {
+    noteIndex(setNotes, token)
     setMessage(data.message)
   })
 }

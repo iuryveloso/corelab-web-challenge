@@ -13,10 +13,10 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
   }
 
   const colorList = Array.from(new Set(colors).values())
-  
+
   return (
     <div
-      className={`flex w-80 items-center rounded-2xl bg-white px-2 pb-1 shadow-md md:w-auto md:rounded-md`}
+      className={`flex w-80 items-center bg-white px-2 pb-1 shadow-md md:w-auto rounded-md`}
     >
       <label className={'text-md mx-1 mt-1 text-gray-500'}>Filtrar: </label>
       <div className={'flex flex-wrap items-center'}>

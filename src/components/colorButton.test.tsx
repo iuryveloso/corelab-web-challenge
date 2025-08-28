@@ -3,18 +3,26 @@ import { act, render, screen } from '@testing-library/react'
 import ColorButton from './colorButton'
 import { Note } from '@/interfaces/noteInterfaces'
 
-const MockColor: Note['color'] | 'all' = 'white'
-const MockEditColor: (color: Note['color'] | 'all') => void = () => []
-const MockCustomSize: string = 'h-2 w-2'
+interface Mock {
+  color: Note['color'] | 'all'
+  editColor: (color: Note['color'] | 'all') => void
+  customSize: string
+}
+
+const mock: Mock = {
+  color: 'white',
+  editColor: () => [],
+  customSize: 'h-2 w-2',
+}
 
 describe('ColorButton', () => {
   it('renders', async () => {
     await act(async () =>
       render(
         <ColorButton
-          color={MockColor}
-          editColor={MockEditColor}
-          customSize={MockCustomSize}
+          color={mock.color}
+          editColor={mock.editColor}
+          customSize={mock.customSize}
         />
       )
     )
@@ -24,9 +32,9 @@ describe('ColorButton', () => {
     await act(async () =>
       render(
         <ColorButton
-          color={MockColor}
-          editColor={MockEditColor}
-          customSize={MockCustomSize}
+          color={mock.color}
+          editColor={mock.editColor}
+          customSize={mock.customSize}
         />
       )
     )
@@ -34,8 +42,7 @@ describe('ColorButton', () => {
     const content = screen.getByRole('button')
 
     expect(content).toBeInTheDocument()
-    expect(content).toHaveClass(MockCustomSize)
-    expect(content).toHaveClass(`bg-card-${MockColor}`)
-
+    expect(content).toHaveClass(mock.customSize)
+    expect(content).toHaveClass(`bg-card-${mock.color}`)
   })
 })

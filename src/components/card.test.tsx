@@ -3,54 +3,67 @@ import { act, render, screen } from '@testing-library/react'
 import Card from './card'
 import { Errors, Note } from '@/interfaces/noteInterfaces'
 import { Dispatch, SetStateAction } from 'react'
+import { randomUUID } from 'node:crypto'
 
-const mockData: Note = {
-  id: '1',
-  title: 'Mock Title 1',
-  body: 'Mock body 1',
-  color: 'white',
-  favorited: false,
+interface Mock {
+  token: string
+  note: Note
+  emptyNote: Note
+  setNotes: Dispatch<SetStateAction<Note[]>>
+  setErrors: Dispatch<SetStateAction<Errors['errors']>>
+  setMessage: Dispatch<SetStateAction<string>>
+  setShowRestore: Dispatch<SetStateAction<{ visible: boolean; note: Note }>>
+  noteUpdate: (
+    note: Note,
+    setNotes: Mock['setNotes'],
+    setErrors: Mock['setErrors'],
+    setMessage: Mock['setMessage']
+  ) => void
+  noteDestroy: (
+    id: string,
+    setNotes: Mock['setNotes'],
+    setMessage: Mock['setMessage']
+  ) => void
 }
 
-const mockEmptyData: Note = {
-  id: '',
-  title: '',
-  body: '',
-  color: 'white',
-  favorited: false,
+const mock: Mock = {
+  token: randomUUID(),
+  note: {
+    id: '1',
+    title: 'Mock Title 1',
+    body: 'Mock body 1',
+    color: 'white',
+    favorited: false,
+  },
+  emptyNote: {
+    id: '',
+    title: '',
+    body: '',
+    color: 'white',
+    favorited: false,
+  },
+  setNotes: () => [],
+  setErrors: () => [],
+  setMessage: () => '',
+  setShowRestore: () => {},
+  noteUpdate: () => [],
+  noteDestroy: () => [],
 }
-
-const mockSetNotes: Dispatch<SetStateAction<Note[]>> = () => []
-const mockSetErrors: Dispatch<SetStateAction<Errors['errors']>> = () => []
-const mockSetMessage: Dispatch<SetStateAction<string>> = () => ''
-const mockSetShowRestore: Dispatch<
-  SetStateAction<{ visible: boolean; note: Note }>
-> = () => {}
-const mockNoteUpdate: (
-  note: Note,
-  setNotes: typeof mockSetNotes,
-  setErrors: typeof mockSetErrors,
-  setMessage: typeof mockSetMessage
-) => void = () => []
-const mockNoteDestroy: (
-  id: string,
-  setNotes: typeof mockSetNotes,
-  setMessage: typeof mockSetMessage
-) => void = () => []
 
 describe('Card', () => {
   it('renders', async () => {
     await act(async () =>
       render(
         <Card
-          note={mockData}
-          emptyNote={mockEmptyData}
-          setNotes={mockSetNotes}
-          setErrors={mockSetErrors}
-          setMessage={mockSetMessage}
-          setShowRestore={mockSetShowRestore}
-          noteDestroy={mockNoteDestroy}
-          noteUpdate={mockNoteUpdate}
+          note={mock.note}
+          emptyNote={mock.emptyNote}
+          setNotes={mock.setNotes}
+          setErrors={mock.setErrors}
+          setMessage={mock.setMessage}
+          setShowRestore={mock.setShowRestore}
+          noteDestroy={mock.noteDestroy}
+          noteUpdate={mock.noteUpdate}
+          token={mock.token}
         />
       )
     )
@@ -60,14 +73,15 @@ describe('Card', () => {
     await act(async () =>
       render(
         <Card
-          note={mockData}
-          emptyNote={mockEmptyData}
-          setNotes={mockSetNotes}
-          setErrors={mockSetErrors}
-          setMessage={mockSetMessage}
-          setShowRestore={mockSetShowRestore}
-          noteDestroy={mockNoteDestroy}
-          noteUpdate={mockNoteUpdate}
+          note={mock.note}
+          emptyNote={mock.emptyNote}
+          setNotes={mock.setNotes}
+          setErrors={mock.setErrors}
+          setMessage={mock.setMessage}
+          setShowRestore={mock.setShowRestore}
+          noteDestroy={mock.noteDestroy}
+          noteUpdate={mock.noteUpdate}
+          token={mock.token}
         />
       )
     )
@@ -75,9 +89,9 @@ describe('Card', () => {
     const content = screen.getAllByRole('textbox')
 
     expect(content[0]).toBeInTheDocument()
-    expect(content[0]).toHaveValue(mockData.title)
+    expect(content[0]).toHaveValue(mock.note.title)
 
     expect(content[1]).toBeInTheDocument()
-    expect(content[1]).toHaveTextContent(mockData.body)
+    expect(content[1]).toHaveTextContent(mock.note.body)
   })
 })

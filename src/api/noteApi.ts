@@ -2,10 +2,13 @@ import { Note, Errors, Message } from '@/interfaces/noteInterfaces'
 
 const domain = () => process.env.NEXT_PUBLIC_API_DOMAIN as string
 
-export async function index(): Promise<Note[]> {
+export async function index(token: string): Promise<Note[]> {
   return await fetch(`${domain()}/api/notes`, {
     method: 'GET',
     credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).then((e) => e.json())
 }
 
@@ -13,7 +16,8 @@ export async function store(
   title: string,
   body: string,
   color: string,
-  favorited: boolean
+  favorited: boolean,
+  token: string
 ): Promise<Message | Errors> {
   return await fetch(`${domain()}/api/notes`, {
     method: 'POST',
@@ -21,15 +25,19 @@ export async function store(
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   }).then((e) => e.json())
 }
 
-export async function show(id: string): Promise<Note> {
+export async function show(id: string, token: string): Promise<Note> {
   return await fetch(`${domain()}/api/notes/${id as string}`, {
     method: 'GET',
     credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).then((e) => e.json())
 }
 
@@ -38,7 +46,8 @@ export async function update(
   title: string,
   body: string,
   color: string,
-  favorited: boolean
+  favorited: boolean,
+  token: string
 ): Promise<Message | Errors> {
   return await fetch(`${domain()}/api/notes/${id}`, {
     method: 'PATCH',
@@ -46,21 +55,28 @@ export async function update(
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     credentials: 'include',
   }).then((e) => e.json())
 }
 
-export async function destroy(id: string): Promise<Message> {
+export async function destroy(id: string, token: string): Promise<Message> {
   return await fetch(`${domain()}/api/notes/${id}`, {
     method: 'DELETE',
     credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).then((e) => e.json())
 }
 
-export async function restore(id: string): Promise<Message> {
+export async function restore(id: string, token: string): Promise<Message> {
   return await fetch(`${domain()}/api/notes/restore/${id}`, {
     method: 'POST',
     credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).then((e) => e.json())
 }

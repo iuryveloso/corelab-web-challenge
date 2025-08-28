@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -25,44 +25,44 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@layer components {
+@layer components{
   .bg-card-blue {
-    background-color: #bae2ff;
+    background-color: #BAE2FF;
   }
   .bg-card-teal {
-    background-color: #b9ffdd;
+    background-color: #B9FFDD;
   }
   .bg-card-yellow {
-    background-color: #ffe8ac;
+    background-color: #FFE8AC;
   }
   .bg-card-salmon {
-    background-color: #ffcab9;
+    background-color: #FFCAB9;
   }
   .bg-card-red {
-    background-color: #f99494;
+    background-color: #F99494;
   }
   .bg-card-sky {
-    background-color: #9dd6ff;
+    background-color: #9DD6FF;
   }
   .bg-card-pink {
-    background-color: #eca1ff;
+    background-color: #ECA1FF;
   }
   .bg-card-lime {
-    background-color: #daff8b;
+    background-color: #DAFF8B;
   }
   .bg-card-orange {
-    background-color: #ffa285;
+    background-color: #FFA285;
   }
   .bg-card-cloud {
-    background-color: #cdcdcd;
+    background-color: #CDCDCD;
   }
   .bg-card-gray {
     background-color: #979797;
   }
   .bg-card-brown {
-    background-color: #a99a7c;
+    background-color: #A99A7C;
   }
   .bg-card-white {
-    background-color: #ffffff;
+    background-color: #FFFFFF;
   }
 }

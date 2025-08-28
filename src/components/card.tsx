@@ -2,7 +2,7 @@
 import { Note, Errors } from '@/interfaces/noteInterfaces'
 import CardButton from './cardButton'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import ColorButton from './colorButton'
+import ColorPick from './colorPick'
 
 interface Card {
   note: Note
@@ -20,13 +20,16 @@ interface Card {
     note: Note,
     setNotes: Card['setNotes'],
     setErrors: Card['setErrors'],
-    setMessage: Card['setMessage']
+    setMessage: Card['setMessage'],
+    token: string
   ) => void
   noteDestroy: (
     id: string,
     setNotes: Card['setNotes'],
-    setMessage: Card['setMessage']
+    setMessage: Card['setMessage'],
+    token: string
   ) => void
+  token: string
 }
 
 export default function Card({
@@ -38,8 +41,9 @@ export default function Card({
   noteUpdate,
   noteDestroy,
   setShowRestore,
+  token,
 }: Card) {
-  const [colorPick, setColorPick] = useState(false)
+  const [colorPicked, setColorPicked] = useState(false)
   const [readOnly, setReadOnly] = useState(true)
   const [editedNote, setEditedNote] = useState<Note>(emptyNote)
 
@@ -56,21 +60,23 @@ export default function Card({
           { ...note, title: editedNote.title, body: editedNote.body },
           setNotes,
           setErrors,
-          setMessage
+          setMessage,
+          token
         )
       }
       setReadOnly(!readOnly)
     }
-    if (type === 'color') setColorPick(!colorPick)
+    if (type === 'color') setColorPicked(!colorPicked)
     if (type === 'favorite')
       noteUpdate(
         { ...note, favorited: !note.favorited },
         setNotes,
         setErrors,
-        setMessage
+        setMessage,
+        token
       )
     if (type === 'delete') {
-      noteDestroy(note.id, setNotes, setMessage)
+      noteDestroy(note.id, setNotes, setMessage, token)
       setShowRestore({ visible: true, note: editedNote })
     }
   }
@@ -82,29 +88,12 @@ export default function Card({
         { ...note, color: whiteColorCheck },
         setNotes,
         setErrors,
-        setMessage
+        setMessage,
+        token
       )
-      setColorPick(!colorPick)
+      setColorPicked(!colorPicked)
     }
   }
-
-  const colorList: Note['color'][] = [
-    'blue',
-    'teal',
-    'yellow',
-    'salmon',
-    'red',
-    'sky',
-  ]
-
-  const colorList2: Note['color'][] = [
-    'pink',
-    'lime',
-    'orange',
-    'cloud',
-    'gray',
-    'brown',
-  ]
 
   const titleBorder =
     note.color !== 'white' ? 'border-white' : 'border-gray-400'
@@ -112,8 +101,6 @@ export default function Card({
     ? '/icons/star_fill.svg'
     : '/icons/star.svg'
   const getIconEdit = readOnly ? '/icons/edit.svg' : '/icons/save.svg'
-  const getEditBackground = !readOnly ? 'bg-orange-300 rounded-full': ''
-  const getColorBackground = colorPick ? 'bg-orange-300 rounded-full': ''
   return (
     <div className={'flex flex-col'}>
       <div
@@ -143,17 +130,17 @@ export default function Card({
             setEditedNote({ ...editedNote, body: e.target.value })
           }
         />
-        <div className={'flex items-center px-3 pt-2'}>
+        <div className={'flex items-center px-3 py-2'}>
           <div className={'grow'}>
             <CardButton
               icon={getIconEdit}
-              className={`h-auto w-7 p-1 ${getEditBackground}`}
+              className={'h-auto w-5'}
               type={'edit'}
               onClickButton={OnClickButton}
             />
             <CardButton
               icon={'/icons/paint.svg'}
-              className={`h-auto w-7 p-1 ${getColorBackground}`}
+              className={'h-auto w-5'}
               type={'color'}
               onClickButton={OnClickButton}
             />
@@ -161,42 +148,19 @@ export default function Card({
           <div>
             <CardButton
               icon={'/icons/delete.svg'}
-              className={'h-auto w-4 mr-1'}
+              className={'h-auto w-4'}
               type={'delete'}
               onClickButton={OnClickButton}
             />
           </div>
         </div>
       </div>
-      {colorPick ? (
-        <div
-          className={`z-10 -mt-8 -mb-12 ml-10 h-20 w-60 lg:h-auto lg:w-120 lg:-mr-40 rounded-md bg-white p-1 shadow-md`}
-        >
-          <div className={'lg:flex lg:flex-wrap'}>
-            <div className={'mb-2 lg:mb-0 lg:mr-2 flex lg:grow justify-between'}>
-              {colorList.map((color, key) => {
-                return (
-                  <ColorButton
-                    key={key}
-                    color={color}
-                    editColor={editColor}
-                  />
-                )
-              })}
-            </div>
-            <div className={'flex lg:grow justify-between'}>
-              {colorList2.map((color, key) => {
-                return (
-                  <ColorButton
-                    key={key}
-                    color={color}
-                    editColor={editColor}
-                  />
-                )
-              })}
-            </div>
-          </div>
-        </div>
+      {colorPicked ? (
+        <ColorPick
+          colorPicked={colorPicked}
+          setColorPicked={setColorPicked}
+          editColor={editColor}
+        />
       ) : (
         false
       )}
