@@ -16,11 +16,11 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
 
   return (
     <div
-      className={`flex w-80 items-center bg-white px-2 pb-1 shadow-md md:w-auto rounded-md`}
+      className={`flex w-80 items-center bg-white px-2 py-1 shadow-md md:w-auto rounded-md`}
     >
-      <label className={'text-md mx-1 mt-1 text-gray-500'}>Filtrar: </label>
+      <label className={'text-md mx-1 text-gray-500'}>Filtrar: </label>
       <div className={'flex flex-wrap items-center'}>
-        <div className={'mr-1'}>
+        <div className={'flex mr-1'}>
           <ColorButton
             color={'all'}
             editColor={editColor}
@@ -30,7 +30,7 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
         {colorList.map((color, key, array) => {
           const margin = key + 1 !== array.length ? 'mr-1' : ''
           return (
-            <div key={key} className={margin}>
+            <div key={key} className={`flex ${margin}`}>
               <ColorButton
                 color={color}
                 editColor={editColor}

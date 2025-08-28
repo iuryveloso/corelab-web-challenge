@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
-import '../globals.css'
 import AppProvider from '@/context/appContext'
+import '../globals.css'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -18,11 +18,11 @@ export const metadata: Metadata = {
   description: 'Um simples gerenciador de notas',
 }
 
-interface ContentLayout {
+interface AuthLayout {
   children: React.ReactNode
 }
 
-export default function ContentLayout({ children }: Readonly<ContentLayout>) {
+export default function AuthLayout({ children }: Readonly<AuthLayout>) {
   return (
     <AppProvider>
       <html lang="en">

@@ -9,7 +9,7 @@ interface NavProfile {
 }
 
 export default function NavProfile({ user, onClickLogout }: NavProfile) {
-  const domain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/storage/uploads/`
+  const domain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/uploads/avatar/`
   const [showMenu, setShowMenu] = useState(false)
 
   const profileHeight = user.name.length > 10 ? 'h-35' : 'h-32'

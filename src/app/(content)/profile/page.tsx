@@ -1,21 +1,23 @@
 'use client'
 import Image from 'next/image'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
 import {
   userUpdate,
   userUpdateAvatar,
   userUpdatePassword,
+  userShow,
 } from '@/functions/userFunctions'
 import Input from '@/components/input'
-import { userShow } from '@/functions/userFunctions'
 import { Errors, User } from '@/interfaces/userInterfaces'
 import NavProfile from '@/components/navProfile'
 import Button from '@/components/button'
+import { AppContext } from '@/context/appContext'
+import { authLogout } from '@/functions/authFunctions'
 
 export default function Profile() {
-  const token = process.env.NEXT_PUBLIC_TEST_TOKEN as string
+  const { token, setToken } = useContext(AppContext)
 
-  const imagesDomain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/storage/uploads/`
+  const imagesDomain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/uploads/avatar/`
 
   const emptyCredentials = {
     old_password: '',
@@ -108,7 +110,7 @@ export default function Profile() {
   }
 
   function onClickLogout() {
-    console.log('logout')
+    authLogout(setMessage, setToken, token)
   }
 
   return (
@@ -132,9 +134,7 @@ export default function Profile() {
                   />
                 </a>
               </div>
-              <label className={'mr-7 text-xl text-gray-500'}>
-                Notes Manager
-              </label>
+              <label className={'mr-7 text-xl text-gray-500'}>CORE NOTES</label>
               <div className={'flex grow justify-end'}>
                 <div className={'sm:hidden'}>
                   <NavProfile user={user} onClickLogout={onClickLogout} />

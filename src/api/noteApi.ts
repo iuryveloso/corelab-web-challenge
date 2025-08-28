@@ -1,9 +1,9 @@
 import { Note, Errors, Message } from '@/interfaces/noteInterfaces'
 
-const domain = () => process.env.NEXT_PUBLIC_API_DOMAIN as string
+const domain = process.env.NEXT_PUBLIC_API_DOMAIN as string
 
 export async function index(token: string): Promise<Note[]> {
-  return await fetch(`${domain()}/api/notes`, {
+  return await fetch(`${domain}/api/notes`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -19,7 +19,7 @@ export async function store(
   favorited: boolean,
   token: string
 ): Promise<Message | Errors> {
-  return await fetch(`${domain()}/api/notes`, {
+  return await fetch(`${domain}/api/notes`, {
     method: 'POST',
     body: JSON.stringify({ title, body, color, favorited }),
     headers: {
@@ -32,7 +32,7 @@ export async function store(
 }
 
 export async function show(id: string, token: string): Promise<Note> {
-  return await fetch(`${domain()}/api/notes/${id as string}`, {
+  return await fetch(`${domain}/api/notes/${id as string}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -49,7 +49,7 @@ export async function update(
   favorited: boolean,
   token: string
 ): Promise<Message | Errors> {
-  return await fetch(`${domain()}/api/notes/${id}`, {
+  return await fetch(`${domain}/api/notes/${id}`, {
     method: 'PATCH',
     body: JSON.stringify({ title, body, color, favorited }),
     headers: {
@@ -62,7 +62,7 @@ export async function update(
 }
 
 export async function destroy(id: string, token: string): Promise<Message> {
-  return await fetch(`${domain()}/api/notes/${id}`, {
+  return await fetch(`${domain}/api/notes/${id}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: {
@@ -72,7 +72,7 @@ export async function destroy(id: string, token: string): Promise<Message> {
 }
 
 export async function restore(id: string, token: string): Promise<Message> {
-  return await fetch(`${domain()}/api/notes/restore/${id}`, {
+  return await fetch(`${domain}/api/notes/restore/${id}`, {
     method: 'POST',
     credentials: 'include',
     headers: {

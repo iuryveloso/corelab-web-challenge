@@ -5,10 +5,10 @@ import {
   Unauthenticated,
 } from '@/interfaces/userInterfaces'
 
-const domain = () => process.env.NEXT_PUBLIC_API_DOMAIN as string
+const domain = process.env.NEXT_PUBLIC_API_DOMAIN as string
 
 export async function show(token: string): Promise<Unauthenticated | User> {
-  return await fetch(`${domain()}/api/user`, {
+  return await fetch(`${domain}/api/user`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -22,7 +22,7 @@ export async function update(
   email: string,
   token: string
 ): Promise<Unauthenticated | Message | Errors> {
-  return await fetch(`${domain()}/api/user/update`, {
+  return await fetch(`${domain}/api/user/update`, {
     method: 'PATCH',
     body: JSON.stringify({ name, email }),
     headers: {
@@ -40,7 +40,7 @@ export async function updateAvatar(
 ): Promise<Unauthenticated | Message | Errors> {
   const userFormData = new FormData()
   userFormData.append('file', file)
-  return await fetch(`${domain()}/api/user/update/avatar`, {
+  return await fetch(`${domain}/api/user/update/avatar`, {
     method: 'POST',
     body: userFormData,
     credentials: 'include',
@@ -56,7 +56,7 @@ export async function updatePassword(
   password_confirmation: string,
   token: string
 ): Promise<Unauthenticated | Message | Errors> {
-  return await fetch(`${domain()}/api/user/update/password`, {
+  return await fetch(`${domain}/api/user/update/password`, {
     method: 'PATCH',
     body: JSON.stringify({ old_password, password, password_confirmation }),
     headers: {

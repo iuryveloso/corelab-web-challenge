@@ -11,15 +11,17 @@ import {
 import { Errors, Note } from '@/interfaces/noteInterfaces'
 import { userShow } from '@/functions/userFunctions'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Card from '@/components/card'
 import CardButton from '@/components/cardButton'
 import NavProfile from '@/components/navProfile'
 import { User } from '@/interfaces/userInterfaces'
 import ColorFilter from '@/components/colorFilter'
+import { AppContext } from '@/context/appContext'
+import { authLogout } from '@/functions/authFunctions'
 
 export default function Dashboard() {
-  const token = process.env.NEXT_PUBLIC_TEST_TOKEN as string
+  const { token, setToken } = useContext(AppContext)
 
   const emptyNote: Note = {
     id: '',
@@ -89,7 +91,7 @@ export default function Dashboard() {
   }, [message])
 
   useEffect(() => {
-    if(token) noteIndex(setNotes, token)
+    if (token) noteIndex(setNotes, token)
   }, [token])
 
   useEffect(() => {
@@ -122,7 +124,7 @@ export default function Dashboard() {
   }
 
   function onClickLogout() {
-    console.log('logout')
+    authLogout(setMessage, setToken, token)
   }
 
   return (
@@ -147,7 +149,7 @@ export default function Dashboard() {
                 </a>
               </div>
               <label className={'mr-7 text-xl text-gray-500'}>
-                Notes Manager
+                 CORE NOTES
               </label>
               <div className={'flex grow justify-end'}>
                 <div className={'sm:hidden'}>
@@ -275,16 +277,12 @@ export default function Dashboard() {
           </div>
         </div>
         {new Set(colors).size > 1 ? (
-            <div
-              className={
-                'mt-7 ml-0 flex justify-center md:ml-5'
-              }
-            >
-              <ColorFilter setColor={setColor} colors={colors} />
-            </div>
-          ) : (
-            false
-          )}
+          <div className={'mt-7 ml-0 flex justify-center md:ml-5'}>
+            <ColorFilter setColor={setColor} colors={colors} />
+          </div>
+        ) : (
+          false
+        )}
         <div className={'flex flex-wrap justify-center'}>
           <div>
             {hasFavorited() ? (
