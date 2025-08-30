@@ -1,12 +1,14 @@
 'use client'
 import { Note, Errors } from '@/interfaces/noteInterfaces'
 import CardButton from './cardButton'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react'
 import ColorPick from './colorPick'
+import PaintIcon from '@/icons/paint'
+import DeleteIcon from '@/icons/delete'
+import StarIcon from '@/icons/star'
 
 interface Card {
   note: Note
-  emptyNote: Note
   setNotes: Dispatch<SetStateAction<Note[]>>
   setErrors: Dispatch<SetStateAction<Errors['errors']>>
   setMessage: Dispatch<SetStateAction<string>>
@@ -34,7 +36,6 @@ interface Card {
 
 export default function Card({
   note,
-  emptyNote,
   setNotes,
   setErrors,
   setMessage,
@@ -43,28 +44,43 @@ export default function Card({
   setShowRestore,
   token,
 }: Card) {
+  const emptyNote: Note = {
+    id: '',
+    title: '',
+    body: '',
+    color: 'white',
+    favorited: false,
+  }
+
   const [colorPicked, setColorPicked] = useState(false)
-  const [readOnly, setReadOnly] = useState(true)
-  const [editedNote, setEditedNote] = useState<Note>(emptyNote)
+  const [isEditable, setIsEditable] = useState(false)
+  const [editableNote, setEditableNote] = useState<Note>(emptyNote)
+
+  const titleInputRef = useRef<HTMLInputElement>(null)
+
+  const isfavorited = note.favorited ? 'fill-yellow-400 text-yellow-400' : ''
 
   useEffect(() => {
-    setEditedNote(note)
+    setEditableNote(note)
   }, [note])
 
+  useEffect(() => {
+    if(isEditable) titleInputRef.current?.focus()
+  }, [isEditable])
+  
+
   function OnClickButton(
-    type: 'edit' | 'color' | 'favorite' | 'delete' | 'save'
+    type: 'color' | 'favorite' | 'delete' | 'save' | 'cancel'
   ) {
-    if (type === 'edit') {
-      if (!readOnly) {
-        noteUpdate(
-          { ...note, title: editedNote.title, body: editedNote.body },
-          setNotes,
-          setErrors,
-          setMessage,
-          token
-        )
-      }
-      setReadOnly(!readOnly)
+    if (type === 'save') {
+      noteUpdate(
+        { ...note, title: editableNote.title, body: editableNote.body },
+        setNotes,
+        setErrors,
+        setMessage,
+        token
+      )
+      setIsEditable(!isEditable)
     }
     if (type === 'color') setColorPicked(!colorPicked)
     if (type === 'favorite')
@@ -77,7 +93,11 @@ export default function Card({
       )
     if (type === 'delete') {
       noteDestroy(note.id, setNotes, setMessage, token)
-      setShowRestore({ visible: true, note: editedNote })
+      setShowRestore({ visible: true, note: editableNote })
+    }
+    if (type === 'cancel') {
+      setIsEditable(!isEditable)
+      setEditableNote(note)
     }
   }
 
@@ -95,75 +115,94 @@ export default function Card({
     }
   }
 
-  const titleBorder =
-    note.color !== 'white' ? 'border-white' : 'border-gray-400'
-  const getIconFavorited = note.favorited
-    ? '/icons/star_fill.svg'
-    : '/icons/star.svg'
-  const getIconEdit = readOnly ? '/icons/edit.svg' : '/icons/save.svg'
   return (
-    <div className={'flex flex-col'}>
-      <div
-        className={`m-5 flex h-96 w-80 flex-col rounded-2xl shadow-md ${`bg-card-${note.color}`} ${readOnly ? '' : 'border border-gray-400'} `}
-      >
-        <div className={`flex items-start border-b ${titleBorder} `}>
-          <input
-            className={`grow resize-none rounded-tl-2xl px-3 py-2 font-semibold outline-none`}
-            value={editedNote.title}
-            readOnly={readOnly}
-            onChange={(e) =>
-              setEditedNote({ ...editedNote, title: e.target.value })
-            }
-          />
-          <CardButton
-            icon={getIconFavorited}
-            className={'mx-3 my-2 h-auto w-5'}
-            type={'favorite'}
-            onClickButton={OnClickButton}
-          />
-        </div>
-        <textarea
-          className={`grow resize-none px-3 py-2 outline-none`}
-          value={editedNote.body}
-          readOnly={readOnly}
-          onChange={(e) =>
-            setEditedNote({ ...editedNote, body: e.target.value })
-          }
-        />
-        <div className={'flex items-center px-3 py-2'}>
-          <div className={'grow'}>
-            <CardButton
-              icon={getIconEdit}
-              className={'h-auto w-5'}
-              type={'edit'}
-              onClickButton={OnClickButton}
-            />
-            <CardButton
-              icon={'/icons/paint.svg'}
-              className={'h-auto w-5'}
-              type={'color'}
-              onClickButton={OnClickButton}
-            />
-          </div>
-          <div>
-            <CardButton
-              icon={'/icons/delete.svg'}
-              className={'h-auto w-4'}
-              type={'delete'}
-              onClickButton={OnClickButton}
-            />
-          </div>
-        </div>
-      </div>
-      {colorPicked ? (
-        <ColorPick
-          colorPicked={colorPicked}
-          setColorPicked={setColorPicked}
-          editColor={editColor}
+    <>
+      {!isEditable ? (
+        <div
+          className={'cursor-pointer fixed z-10 mt-3 rounded-xl h-30 w-80 hover:shadow-md border border-gray-300'}
+          onClick={() => setIsEditable(!isEditable)}
         />
       ) : (
         false
       )}
-    </div>
+      <div className={`flex flex-col`}>
+        <div
+          className={`my-3 sm:mr-3 flex ${isEditable ? 'h-40' : 'h-30'} w-80 flex-col rounded-xl border border-gray-300 ${`bg-card-${note.color}`}`}
+        >
+          <div className={`mx-2 mt-2 mb-1 flex items-start`}>
+            <input
+              className={`grow px-2 py-1 font-semibold outline-none`}
+              value={editableNote.title}
+              disabled={!isEditable}
+              ref={titleInputRef}
+              onChange={(e) =>
+                setEditableNote({ ...editableNote, title: e.target.value })
+              }
+            />
+            <div className={'mt-1 z-20'}>
+              <CardButton
+                Icon={StarIcon}
+                hover
+                iconClassName={`h-5 w-5 ${isfavorited}`}
+                type={'favorite'}
+                onClickButton={OnClickButton}
+              />
+            </div>
+          </div>
+          <div className={'mx-2 my-1 flex'}>
+            <textarea
+              className={`grow resize-none px-2 py-1 outline-none`}
+              value={editableNote.body}
+              disabled={!isEditable}
+              rows={2}
+              onChange={(e) =>
+                setEditableNote({ ...editableNote, body: e.target.value })
+              }
+            />
+          </div>
+          {isEditable ? (
+            <div className={'mx-2 flex pt-2'}>
+              <div className={'flex items-center'}>
+                <CardButton
+                  Icon={PaintIcon}
+                  iconClassName={'h-5 w-5'}
+                  type={'color'}
+                  hover
+                  onClickButton={OnClickButton}
+                />
+                <CardButton
+                  Icon={DeleteIcon}
+                  iconClassName={'h-5 w-5 text-red-500'}
+                  type={'delete'}
+                  hover
+                  onClickButton={OnClickButton}
+                />
+              </div>
+              <div className={'flex grow justify-end'}>
+                <div className={'mr-1'}>
+                  <CardButton
+                    type={'cancel'}
+                    hover
+                    onClickButton={OnClickButton}
+                  />
+                </div>
+                <CardButton type={'save'} onClickButton={OnClickButton} />
+              </div>
+            </div>
+          ) : (
+            false
+          )}
+        </div>
+        {colorPicked ? (
+          <ColorPick
+            colorPicked={colorPicked}
+            setColorPicked={setColorPicked}
+            editColor={editColor}
+          />
+        ) : (
+          false
+        )}
+      </div>
+    </>
   )
 }

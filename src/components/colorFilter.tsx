@@ -16,9 +16,9 @@ export default function ColorFilter({ setColor, colors }: ColorFilter) {
 
   return (
     <div
-      className={`flex w-80 items-center bg-white px-2 py-1 shadow-md md:w-auto rounded-md`}
+      className={`flex items-center bg-white px-2 py-1 border border-gray-300  rounded-lg`}
     >
-      <label className={'text-md mx-1 text-gray-500'}>Filtrar: </label>
+      <label className={'text-md mx-1 text-gray-600'}>Filtrate: </label>
       <div className={'flex flex-wrap items-center'}>
         <div className={'flex mr-1'}>
           <ColorButton

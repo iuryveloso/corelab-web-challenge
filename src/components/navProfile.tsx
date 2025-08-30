@@ -31,7 +31,7 @@ export default function NavProfile({ user, onClickLogout }: NavProfile) {
               alt={'Main logo'}
               priority={true}
               className={
-                'h-10 w-10 rounded-full border border-gray-300 shadow-md'
+                'h-10 w-10 rounded-full border border-gray-300 bg-white'
               }
             />
           ) : (
@@ -41,10 +41,13 @@ export default function NavProfile({ user, onClickLogout }: NavProfile) {
       </div>
       {showMenu ? (
         <>
-          <div className={'fixed inset-0 h-screen w-screen z-10'} onClick={() => setShowMenu(!showMenu)} />
+          <div
+            className={'fixed inset-0 z-10 h-screen w-screen'}
+            onClick={() => setShowMenu(!showMenu)}
+          />
           <div className={'relative'}>
             <div
-              className={`fixed z-20 inset-y-0 top-14 right-6 ${profileHeight} w-60 rounded-sm bg-white shadow-md`}
+              className={`fixed inset-y-0 top-16 right-6 z-20 border border-gray-300 ${profileHeight} w-60 rounded-sm bg-white shadow-md`}
             >
               <div className={'flex h-full flex-col justify-center p-2'}>
                 <div
@@ -70,22 +73,21 @@ export default function NavProfile({ user, onClickLogout }: NavProfile) {
                   )}
                   <label>{user.name}</label>
                 </div>
-                <div className={`mt-1 px-1 py-1 hover:bg-gray-100`}>
-                  <a href={'/profile'} className={''}>
-                    Perfil de Usuário
-                  </a>
-                </div>
-                <div className={`mt-1 px-1 py-1 hover:bg-gray-100`}>
-                  <button
-                    onClick={() => {
-                      setShowMenu(!showMenu)
-                      onClickLogout()
-                    }}
-                    className={'cursor-pointer'}
-                  >
-                    Sair do Sistema
-                  </button>
-                </div>
+                <a
+                  href={'/profile'}
+                  className={'mt-1 px-1 py-1 hover:bg-gray-100'}
+                >
+                  Perfil de Usuário
+                </a>
+                <button
+                  onClick={() => {
+                    setShowMenu(!showMenu)
+                    onClickLogout()
+                  }}
+                  className={'flex justify-start mt-1 cursor-pointer px-1 py-1 hover:bg-gray-100'}
+                >
+                  Sair do Sistema
+                </button>
               </div>
             </div>
           </div>
