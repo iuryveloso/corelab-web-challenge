@@ -6,6 +6,8 @@ import { Errors, User } from '@/interfaces/userInterfaces'
 import Button from '@/components/button'
 import { Credentials } from '@/interfaces/authInterfaces'
 import { authLogin, authRegister } from '@/functions/authFunctions'
+import EyeSlashIcon from '@/icons/eyeSlash'
+import EyeIcon from '@/icons/eye'
 
 export default function Login() {
   const { setToken } = useContext(AppContext)
@@ -109,21 +111,17 @@ export default function Login() {
         <div className={'container flex justify-center'}>
           <div
             className={
-              'mb-2 w-11/12 rounded-xl bg-white px-5 py-2 text-center shadow-md lg:w-4/5'
+              'w-11/12 px-5 py-2 text-center lg:w-4/5'
             }
           >
             <h1 className={'mt-3 pb-3 text-3xl'}>CORE NOTES</h1>
-            <hr className={'border border-gray-400'} />
-            <h2 className={'my-1 text-2xl'}>
-              {mode === 'login' ? 'Login' : 'Cadastro'}
-            </h2>
           </div>
         </div>
         {mode === 'login' ? (
           <div className={'container flex flex-wrap justify-center'}>
             <div
               className={
-                'w-11/12 rounded-xl bg-white px-5 py-3 shadow-md lg:w-4/5'
+                'w-11/12 rounded-xl bg-white px-5 py-3 border border-gray-300 lg:w-4/5'
               }
             >
               <div className={'mb-5'}>
@@ -132,11 +130,10 @@ export default function Login() {
                   value={user.email}
                   id={'emailInput'}
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  placeholder={'Seu email válido...'}
                 />
               </div>
               <div className={'mb-5'}>
-                <label htmlFor={'passwordInput'}>Senha</label>
+                <label htmlFor={'passwordInput'}>Password</label>
                 <Input
                   type={showPassword.password ? 'text' : 'password'}
                   value={credentials.password}
@@ -144,28 +141,24 @@ export default function Login() {
                   onChange={(e) =>
                     setCredentials({ ...credentials, password: e.target.value })
                   }
-                  icon={
-                    showPassword.password
-                      ? '/icons/eye_slash.svg'
-                      : '/icons/eye.svg'
-                  }
-                  iconSize={28}
+                  Icon={showPassword.password ? EyeSlashIcon : EyeIcon}
+                  iconClassName={'h-5 w-5 text-gray-500'}
                   onCLickIcon={onCLickPasswordIcon}
-                  placeholder={'Sua senha...'}
                 />
               </div>
               <div>
                 <Button
-                  text={'Entrar'}
-                  color={'bg-sky-300'}
+                  text={'Login'}
+                  color={'bg-sky-500'}
+                  hoverColor={'hover:bg-sky-600'}
                   onClick={loginSubmit}
                 />
               </div>
               <div className={'mt-1 flex'}>
-                <label className={'mr-2'}>Não é cadastrado?</label>
+                <label className={'mr-2'}>Not registered yet?</label>
                 <button
                   className={
-                    'cursor-pointer font-semibold text-blue-500 underline'
+                    'cursor-pointer font-semibold text-blue-400'
                   }
                   onClick={() => {
                     setMode(mode === 'login' ? 'register' : 'login')
@@ -173,7 +166,7 @@ export default function Login() {
                     setCredentials(emptyCredentials)
                   }}
                 >
-                  Cadastre-se
+                  Register
                 </button>
               </div>
             </div>
@@ -182,16 +175,15 @@ export default function Login() {
           <div className={'container flex flex-wrap justify-center'}>
             <div
               className={
-                'w-11/12 rounded-xl bg-white px-5 py-3 shadow-md lg:w-4/5'
+                'w-11/12 rounded-xl bg-white px-5 py-3 border border-gray-300 lg:w-4/5'
               }
             >
               <div className={'mb-5'}>
-                <label htmlFor={'nameInput'}>Nome</label>
+                <label htmlFor={'nameInput'}>Name</label>
                 <Input
                   value={user.name}
                   id={'nameInput'}
                   onChange={(e) => setUser({ ...user, name: e.target.value })}
-                  placeholder={'Seu nome completo...'}
                 />
               </div>
               <div className={'mb-5'}>
@@ -200,11 +192,10 @@ export default function Login() {
                   value={user.email}
                   id={'emailInput'}
                   onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  placeholder={'Seu email válido...'}
                 />
               </div>
               <div className={'mb-5'}>
-                <label htmlFor={'passwordInput'}>Senha</label>
+                <label htmlFor={'passwordInput'}>Password</label>
                 <Input
                   type={showPassword.password ? 'text' : 'password'}
                   value={credentials.password}
@@ -212,19 +203,19 @@ export default function Login() {
                   onChange={(e) =>
                     setCredentials({ ...credentials, password: e.target.value })
                   }
-                  icon={
-                    showPassword.password
-                      ? '/icons/eye_slash.svg'
-                      : '/icons/eye.svg'
-                  }
-                  iconSize={28}
+                  Icon={showPassword.password ? EyeSlashIcon : EyeIcon}
+                  iconClassName={'h-5 w-5 text-gray-500'}
                   onCLickIcon={onCLickPasswordIcon}
-                  placeholder={'Sua senha...'}
                 />
+                <div className={'flex'}>
+                <label className={'text-end text-xs'}>
+                  Please make sure the password is at least 6 characters long
+                </label>
+              </div>
               </div>
               <div className={'mb-5'}>
                 <label htmlFor={'password_confirmationInput'}>
-                  Confirmar Senha
+                  Confirm Password
                 </label>
                 <Input
                   type={
@@ -238,28 +229,26 @@ export default function Login() {
                       password_confirmation: e.target.value,
                     })
                   }
-                  icon={
-                    showPassword.password_confirmation
-                      ? '/icons/eye_slash.svg'
-                      : '/icons/eye.svg'
+                  Icon={
+                    showPassword.password_confirmation ? EyeSlashIcon : EyeIcon
                   }
-                  iconSize={28}
+                  iconClassName={'h-5 w-5 text-gray-500'}
                   onCLickIcon={onCLickPasswordConfirmationIcon}
-                  placeholder={'Confirmação de senha...'}
                 />
               </div>
               <div>
                 <Button
-                  text={'Cadastrar'}
-                  color={'bg-green-300'}
+                  text={'Register'}
+                  color={'bg-green-500'}
+                  hoverColor={'hover:bg-green-600'}
                   onClick={registerSubmit}
                 />
               </div>
               <div className={'mt-1 flex'}>
-                <label className={'mr-2'}>Já é cadastrado?</label>
+                <label className={'mr-2'}>Already registered?</label>
                 <button
                   className={
-                    'cursor-pointer font-semibold text-blue-500 underline'
+                    'cursor-pointer font-semibold text-blue-400'
                   }
                   onClick={() => {
                     setMode(mode === 'register' ? 'login' : 'register')
