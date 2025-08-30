@@ -83,10 +83,10 @@ export default function Login() {
   return (
     <div className={'flex h-full flex-col justify-center'}>
       <div className={'relative z-0'}>
-        <div className={'fixed inset-y-0 right-0 z-10 mr-2'}>
-          <div className={'flex flex-col'}>
+        <div className={'fixed inset-y-14 right-0 z-10 mr-2'}>
+          <div className={'mt-3 flex flex-col'}>
             <div
-              className={`mt-1 flex flex-col items-center rounded-sm bg-red-300 px-3 py-2 shadow-md ${showErrors ? '' : 'hidden'}`}
+              className={`mt-1 flex flex-col items-center rounded-lg border border-red-800 bg-red-500 px-2 py-1 text-white ${showErrors ? '' : 'hidden'}`}
             >
               {errors ? (
                 <>
@@ -99,7 +99,7 @@ export default function Login() {
               )}
             </div>
             <div
-              className={`mt-1 flex flex-col items-center rounded-sm bg-green-300 px-3 py-2 shadow-md ${showMessage ? '' : 'hidden'}`}
+              className={`mt-1 flex flex-col items-center rounded-lg border border-green-900 bg-green-600 px-2 py-1 text-white ${showMessage ? '' : 'hidden'}`}
             >
               {message ? <label>{message}</label> : false}
             </div>
@@ -109,11 +109,7 @@ export default function Login() {
 
       <div className={'flex flex-col items-center'}>
         <div className={'container flex justify-center'}>
-          <div
-            className={
-              'w-11/12 px-5 py-2 text-center lg:w-4/5'
-            }
-          >
+          <div className={'w-11/12 px-5 py-2 text-center lg:w-4/5'}>
             <h1 className={'mt-3 pb-3 text-3xl'}>CORE NOTES</h1>
           </div>
         </div>
@@ -121,7 +117,7 @@ export default function Login() {
           <div className={'container flex flex-wrap justify-center'}>
             <div
               className={
-                'w-11/12 rounded-xl bg-white px-5 py-3 border border-gray-300 lg:w-4/5'
+                'w-11/12 rounded-xl border border-gray-300 bg-white px-5 py-3 lg:w-4/5'
               }
             >
               <div className={'mb-5'}>
@@ -157,9 +153,7 @@ export default function Login() {
               <div className={'mt-1 flex'}>
                 <label className={'mr-2'}>Not registered yet?</label>
                 <button
-                  className={
-                    'cursor-pointer font-semibold text-blue-400'
-                  }
+                  className={'cursor-pointer font-semibold text-blue-400'}
                   onClick={() => {
                     setMode(mode === 'login' ? 'register' : 'login')
                     setUser(emptyUser)
@@ -175,7 +169,7 @@ export default function Login() {
           <div className={'container flex flex-wrap justify-center'}>
             <div
               className={
-                'w-11/12 rounded-xl bg-white px-5 py-3 border border-gray-300 lg:w-4/5'
+                'w-11/12 rounded-xl border border-gray-300 bg-white px-5 py-3 lg:w-4/5'
               }
             >
               <div className={'mb-5'}>
@@ -208,10 +202,10 @@ export default function Login() {
                   onCLickIcon={onCLickPasswordIcon}
                 />
                 <div className={'flex'}>
-                <label className={'text-end text-xs'}>
-                  Please make sure the password is at least 6 characters long
-                </label>
-              </div>
+                  <label className={'text-end text-xs'}>
+                    Please make sure the password is at least 6 characters long
+                  </label>
+                </div>
               </div>
               <div className={'mb-5'}>
                 <label htmlFor={'password_confirmationInput'}>
@@ -247,9 +241,7 @@ export default function Login() {
               <div className={'mt-1 flex'}>
                 <label className={'mr-2'}>Already registered?</label>
                 <button
-                  className={
-                    'cursor-pointer font-semibold text-blue-400'
-                  }
+                  className={'cursor-pointer font-semibold text-blue-400'}
                   onClick={() => {
                     setMode(mode === 'register' ? 'login' : 'register')
                     setUser(emptyUser)
