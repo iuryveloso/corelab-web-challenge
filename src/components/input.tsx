@@ -1,32 +1,35 @@
-import Image from 'next/image'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, JSX } from 'react'
+
+interface Icon {
+  className: string
+}
 
 interface Input {
   id?: string
-  icon?: string
+  Icon?: ({ className }: Icon) => JSX.Element
   value: string
   type?: string
-  iconSize?: number
-  placeholder: string
+  iconClassName?: string
+  placeholder?: string
   onCLickIcon?: () => void
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function Input({
   id,
-  icon,
+  Icon,
   onChange,
   value,
   type,
-  iconSize,
+  iconClassName,
   onCLickIcon,
   placeholder,
 }: Input) {
-  const borderInput = icon
-    ? `border-y-2 border-l-2 rounded-l-sm`
-    : `border-2 rounded-sm`
+  const borderInput = Icon
+    ? `border-y border-l rounded-l-lg`
+    : `border rounded-lg`
   return (
-    <div className={'flex shadow-md'}>
+    <div className={'flex focus-within:rounded-lg focus-within:outline-3 focus-within:outline-gray-300'}>
       <input
         type={type ?? 'text'}
         id={id as string}
@@ -35,28 +38,18 @@ export default function Input({
         placeholder={placeholder}
         onChange={onChange}
       />
-      {icon ? (
+      {Icon ? (
         <div
-          className={`flex items-center rounded-r-sm border-y-2 border-r-2 border-gray-300 px-3 py-1 text-gray-400`}
+          className={`flex items-center rounded-r-lg border-y border-r border-gray-300 px-3 py-1 text-gray-400`}
         >
           {onCLickIcon ? (
-            <Image
-              src={icon}
-              width={iconSize}
-              height={iconSize}
-              alt={'Input Icon'}
-              priority={true}
-              onClick={onCLickIcon}
-              className={'cursor-pointer'}
-            />
+            <div onClick={onCLickIcon} className={'cursor-pointer'}>
+              <Icon className={iconClassName as string} />
+            </div>
           ) : (
-            <Image
-              src={icon}
-              width={iconSize}
-              height={iconSize}
-              alt={'Input Icon'}
-              priority={true}
-            />
+            <div>
+              <Icon className={iconClassName as string} />
+            </div>
           )}
         </div>
       ) : (

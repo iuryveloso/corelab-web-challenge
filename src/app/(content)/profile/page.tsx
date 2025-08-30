@@ -13,6 +13,8 @@ import NavProfile from '@/components/navProfile'
 import Button from '@/components/button'
 import { AppContext } from '@/context/appContext'
 import { authLogout } from '@/functions/authFunctions'
+import EyeSlashIcon from '@/icons/eyeSlash'
+import EyeIcon from '@/icons/eye'
 
 export default function Profile() {
   const { token, setToken } = useContext(AppContext)
@@ -115,47 +117,44 @@ export default function Profile() {
 
   return (
     <div>
-      <div className={'relative'}>
-        <div className={'fixed inset-x-0 top-0'}>
+      <div className={'mx-5 mt-5 flex flex-col items-center'}>
+        <div className={'container'}>
           <nav
             className={
-              'flex flex-col flex-wrap bg-white px-5 py-1 shadow-md sm:flex-row'
+              'flex flex-col flex-wrap sm:flex-row sm:flex-wrap-reverse'
             }
           >
-            <div className={'mb-3 flex items-center sm:mb-0'}>
-              <div className={'mr-1'}>
-                <a href="/dashboard">
-                  <Image
-                    src={'/logo.svg'}
-                    width={35}
-                    height={35}
-                    alt={'Main logo'}
-                    priority={true}
-                  />
-                </a>
-              </div>
-              <label className={'mr-7 text-xl text-gray-500'}>CORE NOTES</label>
-              <div className={'flex grow justify-end'}>
+            <div className={'flex grow items-center'}>
+              <a href="/dashboard">
+                <label className={'cursor-pointer text-2xl text-gray-700'}>
+                  CORE NOTES
+                </label>
+              </a>
+              <div className={'ml-3 flex grow justify-end'}>
                 <div className={'sm:hidden'}>
                   <NavProfile user={user} onClickLogout={onClickLogout} />
                 </div>
               </div>
             </div>
-            <div className={'flex grow justify-end'}>
-              <div className={'hidden sm:block'}>
-                <NavProfile user={user} onClickLogout={onClickLogout} />
+            <div
+              className={'flex grow items-center justify-center sm:justify-end'}
+            >
+              <div className={'ml-3 flex'}>
+                <div className={'hidden sm:block'}>
+                  <NavProfile user={user} onClickLogout={onClickLogout} />
+                </div>
               </div>
             </div>
           </nav>
         </div>
       </div>
 
-      <div className={'mt-16'}>
+      <div className={'mt-8'}>
         <div className={'relative z-0'}>
           <div className={'fixed inset-y-14 right-0 z-10 mr-2'}>
-            <div className={'flex flex-col'}>
+            <div className={'mt-3 flex flex-col'}>
               <div
-                className={`mt-1 flex flex-col items-center rounded-sm bg-red-300 px-3 py-2 shadow-md ${showErrors ? '' : 'hidden'}`}
+                className={`mt-1 flex flex-col items-center rounded-lg border border-red-800 bg-red-500 px-2 py-1 text-white ${showErrors ? '' : 'hidden'}`}
               >
                 {errors ? (
                   <>
@@ -168,7 +167,7 @@ export default function Profile() {
                 )}
               </div>
               <div
-                className={`mt-1 flex flex-col items-center rounded-sm bg-green-300 px-3 py-2 shadow-md ${showMessage ? '' : 'hidden'}`}
+                className={`mt-1 flex flex-col items-center rounded-lg border border-green-900 bg-green-600 px-2 py-1 text-white ${showMessage ? '' : 'hidden'}`}
               >
                 {message ? <label>{message}</label> : false}
               </div>
@@ -178,20 +177,12 @@ export default function Profile() {
       </div>
 
       <div className={'flex flex-col items-center'}>
-        <div className={'container flex justify-center'}>
-          <div
-            className={
-              'mb-2 w-11/12 rounded-xl bg-white py-2 text-center shadow-md lg:w-4/5'
-            }
-          >
-            <h2 className={'mt-1 text-2xl'}>Perfil de Usuário</h2>
-          </div>
-        </div>
-
         <div className={'container flex flex-wrap justify-center'}>
-          <div className={`mb-2 flex w-11/12 pr-0 lg:w-1/5 lg:pr-2`}>
+          <div
+            className={`mb-2 flex w-11/12 pr-0 sm:w-3/9 sm:pr-2 md:w-2/7 lg:w-1/5`}
+          >
             <div
-              className={`h-full w-full rounded-xl bg-white px-5 pt-4 pb-3 shadow-md`}
+              className={`h-full w-full rounded-xl border border-gray-300 bg-white px-5 pt-4 pb-3`}
             >
               <div className={'mb-3 flex justify-center'}>
                 {user.avatar ? (
@@ -203,7 +194,7 @@ export default function Profile() {
                     height={250}
                     alt={'Profile'}
                     priority={true}
-                    className={`h-36 w-36 rounded-full border border-gray-300 shadow-md`}
+                    className={`h-36 w-36 rounded-full border border-gray-300`}
                   />
                 ) : (
                   <Image
@@ -212,14 +203,15 @@ export default function Profile() {
                     height={250}
                     alt={'Profile'}
                     priority={true}
-                    className={`h-36 w-36 rounded-full border border-gray-300 shadow-md`}
+                    className={`h-36 w-36 rounded-full border border-gray-300`}
                   />
                 )}
               </div>
               <div>
                 <Button
-                  text={'Alterar Imagem'}
-                  color={'bg-amber-200'}
+                  text={'Change Avatar'}
+                  color={'bg-amber-500'}
+                  hoverColor={'hover:bg-amber-600'}
                   onClick={updateAvatarClick}
                 />
                 <input
@@ -234,42 +226,41 @@ export default function Profile() {
           </div>
           <div
             className={
-              'mb-2 w-11/12 rounded-xl bg-white px-5 py-3 shadow-md lg:w-3/5'
+              'mb-2 w-11/12 rounded-xl border border-gray-300 bg-white px-5 py-3 sm:w-6/9 md:w-5/7 lg:w-4/5'
             }
           >
             <div className={'mb-5'}>
-              <label htmlFor={'nameInput'}>Nome</label>
+              <label htmlFor={'nameInput'}>Name</label>
               <Input
                 value={user.name}
                 id={'nameInput'}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
-                placeholder={'Seu nome completo...'}
               />
             </div>
-            <div className={'mb-5'}>
+            <div className={'mb-6'}>
               <label htmlFor={'emailInput'}>Email</label>
               <Input
                 value={user.email}
                 id={'emailInput'}
                 onChange={(e) => setUser({ ...user, email: e.target.value })}
-                placeholder={'Seu email válido...'}
               />
             </div>
             <div>
               <Button
-                text={'Alterar Dados'}
-                color={'bg-green-300'}
+                text={'Change Personal Data'}
+                color={'bg-green-500'}
+                hoverColor={'hover:bg-green-600'}
                 onClick={updateUserClick}
               />
             </div>
           </div>
           <div
             className={
-              'w-11/12 rounded-xl bg-white px-5 py-3 shadow-md lg:w-4/5'
+              'w-11/12 rounded-xl border border-gray-300 bg-white px-5 py-3 sm:w-full'
             }
           >
             <div className={'mb-5'}>
-              <label htmlFor={'old_passwordInput'}>Senha Atual</label>
+              <label htmlFor={'old_passwordInput'}>Current Password</label>
               <Input
                 type={showPassword.old_password ? 'text' : 'password'}
                 value={credentials.old_password}
@@ -280,18 +271,13 @@ export default function Profile() {
                     old_password: e.target.value,
                   })
                 }
-                icon={
-                  showPassword.old_password
-                    ? '/icons/eye_slash.svg'
-                    : '/icons/eye.svg'
-                }
-                iconSize={28}
+                Icon={showPassword.old_password ? EyeSlashIcon : EyeIcon}
+                iconClassName={'h-5 w-5 text-gray-500'}
                 onCLickIcon={onCLickOldPasswordIcon}
-                placeholder={'Sua senha atual...'}
               />
             </div>
             <div className={'mb-5'}>
-              <label htmlFor={'passwordInput'}>Nova Senha</label>
+              <label htmlFor={'passwordInput'}>New Password</label>
               <Input
                 type={showPassword.password ? 'text' : 'password'}
                 value={credentials.password}
@@ -299,19 +285,19 @@ export default function Profile() {
                 onChange={(e) =>
                   setCredentials({ ...credentials, password: e.target.value })
                 }
-                icon={
-                  showPassword.password
-                    ? '/icons/eye_slash.svg'
-                    : '/icons/eye.svg'
-                }
-                iconSize={28}
+                Icon={showPassword.password ? EyeSlashIcon : EyeIcon}
+                iconClassName={'h-5 w-5 text-gray-500'}
                 onCLickIcon={onCLickPasswordIcon}
-                placeholder={'Nova senha...'}
               />
+              <div className={'flex'}>
+                <label className={'text-end text-xs'}>
+                  Please make sure the password is at least 6 characters long
+                </label>
+              </div>
             </div>
             <div className={'mb-5'}>
               <label htmlFor={'password_confirmationInput'}>
-                Confirmar Senha
+                Confirm New Password
               </label>
               <Input
                 type={showPassword.password_confirmation ? 'text' : 'password'}
@@ -323,20 +309,16 @@ export default function Profile() {
                     password_confirmation: e.target.value,
                   })
                 }
-                icon={
-                  showPassword.password_confirmation
-                    ? '/icons/eye_slash.svg'
-                    : '/icons/eye.svg'
-                }
-                iconSize={28}
+                Icon={showPassword.password_confirmation ? EyeSlashIcon : EyeIcon}
+                iconClassName={'h-5 w-5 text-gray-500'}
                 onCLickIcon={onCLickPasswordConfirmationIcon}
-                placeholder={'Confirmação de senha...'}
               />
             </div>
             <div>
               <Button
-                text={'Alterar Senha'}
-                color={'bg-indigo-300'}
+                text={'Change Password'}
+                color={'bg-indigo-400'}
+                hoverColor={'hover:bg-indigo-500'}
                 onClick={updatePasswordClick}
               />
             </div>
