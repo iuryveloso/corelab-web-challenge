@@ -144,11 +144,12 @@ export default function Login() {
               </div>
               <div>
                 <Button
-                  text={'Login'}
                   color={'bg-sky-500'}
                   hoverColor={'hover:bg-sky-600'}
                   onClick={loginSubmit}
-                />
+                >
+                  Login
+                </Button>
               </div>
               <div className={'mt-1 flex'}>
                 <label className={'mr-2'}>Not registered yet?</label>
@@ -232,11 +233,12 @@ export default function Login() {
               </div>
               <div>
                 <Button
-                  text={'Register'}
                   color={'bg-green-500'}
                   hoverColor={'hover:bg-green-600'}
                   onClick={registerSubmit}
-                />
+                >
+                  Register
+                </Button>
               </div>
               <div className={'mt-1 flex'}>
                 <label className={'mr-2'}>Already registered?</label>

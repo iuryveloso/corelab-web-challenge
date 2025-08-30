@@ -1,19 +1,28 @@
-
 interface Button {
-  text: string
   color: string
   hoverColor?: string
   onClick: () => void
+  borderless?: boolean
+  underline?: boolean
+  children: React.ReactNode
 }
 
-export default function Button({ onClick, text, color, hoverColor }: Button) {
+export default function Button({
+  onClick,
+  color,
+  hoverColor,
+  borderless,
+  underline,
+  children,
+}: Button) {
+  const border = !borderless ? 'border border-gray-300': ''
   return (
     <div className={'flex'}>
       <button
-        className={`w-full cursor-pointer border border-gray-300 rounded-md text-white px-3 py-1 outline-none ${color} ${hoverColor}`}
+        className={`w-full cursor-pointer rounded-md  px-3 py-1 outline-none ${underline? 'underline' : ''} ${border} ${color} ${hoverColor}`}
         onClick={onClick}
       >
-        {text}
+        {children}
       </button>
     </div>
   )

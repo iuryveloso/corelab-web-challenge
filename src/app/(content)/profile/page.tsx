@@ -209,11 +209,12 @@ export default function Profile() {
               </div>
               <div>
                 <Button
-                  text={'Change Avatar'}
                   color={'bg-amber-500'}
                   hoverColor={'hover:bg-amber-600'}
                   onClick={updateAvatarClick}
-                />
+                >
+                  Change Avatar
+                </Button>
                 <input
                   type={'file'}
                   accept={'image/png, image/jpeg, .svg'}
@@ -247,11 +248,12 @@ export default function Profile() {
             </div>
             <div>
               <Button
-                text={'Change Personal Data'}
                 color={'bg-green-500'}
                 hoverColor={'hover:bg-green-600'}
                 onClick={updateUserClick}
-              />
+              >
+                Change Personal Data
+              </Button>
             </div>
           </div>
           <div
@@ -309,18 +311,21 @@ export default function Profile() {
                     password_confirmation: e.target.value,
                   })
                 }
-                Icon={showPassword.password_confirmation ? EyeSlashIcon : EyeIcon}
+                Icon={
+                  showPassword.password_confirmation ? EyeSlashIcon : EyeIcon
+                }
                 iconClassName={'h-5 w-5 text-gray-500'}
                 onCLickIcon={onCLickPasswordConfirmationIcon}
               />
             </div>
             <div>
               <Button
-                text={'Change Password'}
                 color={'bg-indigo-400'}
                 hoverColor={'hover:bg-indigo-500'}
                 onClick={updatePasswordClick}
-              />
+              >
+                Change Password
+              </Button>
             </div>
           </div>
         </div>

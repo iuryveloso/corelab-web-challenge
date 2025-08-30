@@ -19,6 +19,7 @@ import { AppContext } from '@/context/appContext'
 import { authLogout } from '@/functions/authFunctions'
 import SearchIcon from '@/icons/search'
 import EmptyCard from '@/components/emptyCard'
+import Button from '@/components/button'
 
 export default function Dashboard() {
   const { token, setToken } = useContext(AppContext)
@@ -116,7 +117,11 @@ export default function Dashboard() {
     <div className={'m-5 flex flex-col items-center'}>
       <div className={'container'}>
         <div>
-          <nav className={'flex flex-col sm:flex-row flex-wrap sm:flex-wrap-reverse'}>
+          <nav
+            className={
+              'flex flex-col flex-wrap sm:flex-row sm:flex-wrap-reverse'
+            }
+          >
             <div className={'flex grow items-center'}>
               <a href="/dashboard">
                 <label className={'cursor-pointer text-2xl text-gray-700'}>
@@ -129,10 +134,12 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className={'flex grow items-center justify-center sm:justify-end'}>
+            <div
+              className={'flex grow items-center justify-center sm:justify-end'}
+            >
               <div
                 className={
-                  'flex w-80 ml-3 mt-1 sm:mt-0 focus-within:rounded-lg focus-within:outline-3 focus-within:outline-gray-300 lg:w-2xl'
+                  'mt-1 ml-3 flex w-80 focus-within:rounded-lg focus-within:outline-3 focus-within:outline-gray-300 sm:mt-0 lg:w-2xl'
                 }
               >
                 <div
@@ -182,23 +189,28 @@ export default function Dashboard() {
                   {message ? <label>{message}</label> : false}
                   {showRestore.visible &&
                   Object.keys(showRestore.note).length !== 0 ? (
-                    <button
-                      className={`m-1 cursor-pointer rounded-sm bg-white px-2 py-1 text-gray-700 shadow-md`}
-                      onClick={() => {
-                        noteRestore(
-                          showRestore.note.id,
-                          setNotes,
-                          setMessage,
-                          token
-                        )
-                        setShowRestore({
-                          visible: false,
-                          note: emptyNote,
-                        })
-                      }}
-                    >
-                      Restore
-                    </button>
+                    <>
+                      <Button
+                        color={'bg-green-600'}
+                        onClick={() => {
+                          noteRestore(
+                            showRestore.note.id,
+                            setNotes,
+                            setMessage,
+                            token
+                          )
+                          setShowRestore({
+                            visible: false,
+                            note: emptyNote,
+                          })
+                        }}
+                        hoverColor={'hover:bg-green-700'}
+                        borderless
+                        underline
+                      >
+                        Click here to restore
+                      </Button>
+                    </>
                   ) : (
                     false
                   )}
