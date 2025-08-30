@@ -15,7 +15,7 @@ export default function NavProfile({ user, onClickLogout }: NavProfile) {
   const profileHeight = user.name.length > 10 ? 'h-35' : 'h-32'
 
   return (
-    <div className={'flex flex-col items-center'}>
+    <div className={`flex flex-col items-center`}>
       <div className={'flex items-center'}>
         <button
           className={'cursor-pointer'}
@@ -45,50 +45,50 @@ export default function NavProfile({ user, onClickLogout }: NavProfile) {
             className={'fixed inset-0 z-10 h-screen w-screen'}
             onClick={() => setShowMenu(!showMenu)}
           />
-          <div className={'relative'}>
-            <div
-              className={`fixed inset-y-0 top-16 right-6 z-20 border border-gray-300 ${profileHeight} w-60 rounded-sm bg-white shadow-md`}
-            >
-              <div className={'flex h-full flex-col justify-center p-2'}>
-                <div
-                  className={
-                    'flex flex-wrap items-center border-b border-gray-400 pb-1 font-semibold'
-                  }
-                >
-                  {user.avatar ? (
-                    <Image
-                      loader={({ src }) => src}
-                      unoptimized={true}
-                      src={`${domain}${user.avatar}`}
-                      width={100}
-                      height={100}
-                      alt={'Main logo'}
-                      priority={true}
-                      className={
-                        'mr-1 h-10 w-10 rounded-full border border-gray-300'
-                      }
-                    />
-                  ) : (
-                    false
-                  )}
-                  <label>{user.name}</label>
-                </div>
-                <a
-                  href={'/profile'}
-                  className={'mt-1 px-1 py-1 hover:bg-gray-100'}
-                >
-                  Perfil de Usuário
-                </a>
-                <button
-                  onClick={() => {
-                    setShowMenu(!showMenu)
-                    onClickLogout()
-                  }}
-                  className={'flex justify-start mt-1 cursor-pointer px-1 py-1 hover:bg-gray-100'}
-                >
-                  Sair do Sistema
-                </button>
+          <div
+            className={`z-20 mt-1 -mb-33 -ml-50 border border-gray-300 ${profileHeight} w-60 rounded-xl bg-white shadow-md`}
+          >
+            <div className={'flex h-full flex-col justify-center p-2'}>
+              <div
+                className={
+                  'flex flex-wrap items-center border-b border-gray-300 pb-1 font-semibold'
+                }
+              >
+                {user.avatar ? (
+                  <Image
+                    loader={({ src }) => src}
+                    unoptimized={true}
+                    src={`${domain}${user.avatar}`}
+                    width={100}
+                    height={100}
+                    alt={'Main logo'}
+                    priority={true}
+                    className={
+                      'mr-1 h-10 w-10 rounded-full border border-gray-300'
+                    }
+                  />
+                ) : (
+                  false
+                )}
+                <label>{user.name}</label>
               </div>
+              <a
+                href={'/profile'}
+                className={'mt-1 px-1 py-1 hover:bg-gray-100'}
+              >
+                User profile
+              </a>
+              <button
+                onClick={() => {
+                  setShowMenu(!showMenu)
+                  onClickLogout()
+                }}
+                className={
+                  'mt-1 flex cursor-pointer justify-start px-1 py-1 hover:bg-gray-100'
+                }
+              >
+                Log out
+              </button>
             </div>
           </div>
         </>
