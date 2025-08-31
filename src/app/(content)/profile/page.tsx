@@ -15,6 +15,7 @@ import { AppContext } from '@/context/appContext'
 import { authLogout } from '@/functions/authFunctions'
 import EyeSlashIcon from '@/icons/eyeSlash'
 import EyeIcon from '@/icons/eye'
+import Alert from '@/components/alert'
 
 export default function Profile() {
   const { token, setToken } = useContext(AppContext)
@@ -118,6 +119,12 @@ export default function Profile() {
   return (
     <div>
       <div className={'mx-5 mt-5 flex flex-col items-center'}>
+        <Alert
+          errors={errors}
+          message={message}
+          showErrors={showErrors}
+          showMessage={showMessage}
+        />
         <div className={'container'}>
           <nav
             className={
@@ -149,34 +156,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className={'mt-8'}>
-        <div className={'relative z-0'}>
-          <div className={'fixed inset-y-14 right-0 z-10 mr-2'}>
-            <div className={'mt-3 flex flex-col'}>
-              <div
-                className={`mt-1 flex flex-col items-center rounded-lg border border-red-800 bg-red-500 px-2 py-1 text-white ${showErrors ? '' : 'hidden'}`}
-              >
-                {errors ? (
-                  <>
-                    {errors.map((error, key) => (
-                      <label key={key}>{error.message}</label>
-                    ))}
-                  </>
-                ) : (
-                  false
-                )}
-              </div>
-              <div
-                className={`mt-1 flex flex-col items-center rounded-lg border border-green-900 bg-green-600 px-2 py-1 text-white ${showMessage ? '' : 'hidden'}`}
-              >
-                {message ? <label>{message}</label> : false}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={'flex flex-col items-center'}>
+      <div className={'mt-3 flex flex-col items-center'}>
         <div className={'container flex flex-wrap justify-center'}>
           <div
             className={`mb-2 flex w-11/12 pr-0 sm:w-3/9 sm:pr-2 md:w-2/7 lg:w-1/5`}

@@ -19,7 +19,7 @@ export default function Button({
   return (
     <div className={'flex'}>
       <button
-        className={`w-full cursor-pointer rounded-md  px-3 py-1 outline-none ${underline? 'underline' : ''} ${border} ${color} ${hoverColor}`}
+        className={`w-full cursor-pointer rounded-md  px-3 py-1 outline-none text-white ${underline? 'underline' : ''} ${border} ${color} ${hoverColor}`}
         onClick={onClick}
       >
         {children}

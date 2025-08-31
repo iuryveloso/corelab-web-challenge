@@ -20,6 +20,7 @@ import { authLogout } from '@/functions/authFunctions'
 import SearchIcon from '@/icons/search'
 import EmptyCard from '@/components/emptyCard'
 import Button from '@/components/button'
+import Alert from '@/components/alert'
 
 export default function Dashboard() {
   const { token, setToken } = useContext(AppContext)
@@ -115,6 +116,40 @@ export default function Dashboard() {
 
   return (
     <div className={'m-5 flex flex-col items-center'}>
+          <Alert
+            errors={errors}
+            message={message}
+            showErrors={showErrors}
+            showMessage={showMessage}
+          >
+            {showRestore.visible &&
+            Object.keys(showRestore.note).length !== 0 ? (
+              <>
+                <Button
+                  color={'bg-green-600'}
+                  onClick={() => {
+                    noteRestore(
+                      showRestore.note.id,
+                      setNotes,
+                      setMessage,
+                      token
+                    )
+                    setShowRestore({
+                      visible: false,
+                      note: emptyNote,
+                    })
+                  }}
+                  hoverColor={'hover:bg-green-700'}
+                  borderless
+                  underline
+                >
+                  Click here to restore
+                </Button>
+              </>
+            ) : (
+              false
+            )}
+          </Alert>
       <div className={'container'}>
         <div>
           <nav
@@ -167,58 +202,6 @@ export default function Dashboard() {
         </div>
 
         <div className={'mt-16'}>
-          <div className={'relative z-0'}>
-            <div className={'fixed inset-y-14 right-0 z-10 mr-2'}>
-              <div className={'mt-3 flex flex-col'}>
-                <div
-                  className={`mt-1 flex flex-col items-center rounded-lg border border-red-800 bg-red-500 px-2 py-1 text-white ${showErrors ? '' : 'hidden'}`}
-                >
-                  {errors ? (
-                    <>
-                      {errors.map((error, key) => (
-                        <label key={key}>{error.message}</label>
-                      ))}
-                    </>
-                  ) : (
-                    false
-                  )}
-                </div>
-                <div
-                  className={`mt-1 flex flex-col items-center rounded-lg border border-green-900 bg-green-600 px-2 py-1 text-white ${showMessage ? '' : 'hidden'}`}
-                >
-                  {message ? <label>{message}</label> : false}
-                  {showRestore.visible &&
-                  Object.keys(showRestore.note).length !== 0 ? (
-                    <>
-                      <Button
-                        color={'bg-green-600'}
-                        onClick={() => {
-                          noteRestore(
-                            showRestore.note.id,
-                            setNotes,
-                            setMessage,
-                            token
-                          )
-                          setShowRestore({
-                            visible: false,
-                            note: emptyNote,
-                          })
-                        }}
-                        hoverColor={'hover:bg-green-700'}
-                        borderless
-                        underline
-                      >
-                        Click here to restore
-                      </Button>
-                    </>
-                  ) : (
-                    false
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className={'-mt-8 flex justify-center'}>
             <EmptyCard
               message={message}
