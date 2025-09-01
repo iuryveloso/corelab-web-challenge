@@ -17,7 +17,7 @@ const mock: Mock = {
   onClickLogout: () => [],
 }
 
-const domain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/storage/uploads/`
+const domain = `${process.env.NEXT_PUBLIC_API_DOMAIN}/uploads/avatar/`
 
 describe('NavProfile', () => {
   it('renders', async () => {
@@ -48,12 +48,12 @@ describe('NavProfile', () => {
     const buttons = screen.getAllByRole('button')
     expect(buttons[1]).toBeInTheDocument()
     expect(buttons[1]).toHaveClass('cursor-pointer')
-    expect(buttons[1]).toHaveTextContent('Sair do Sistema')
+    expect(buttons[1]).toHaveTextContent('Log out')
 
     const link = screen.getByRole('link')
     expect(link).toBeInTheDocument()
     expect(link).toHaveAttribute('href', '/profile')
-    expect(link).toHaveTextContent('Perfil de Usuário')
+    expect(link).toHaveTextContent('User profile')
 
   })
 })

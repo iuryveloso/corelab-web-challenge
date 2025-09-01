@@ -1,18 +1,24 @@
 import '@testing-library/jest-dom'
 import { act, render, screen } from '@testing-library/react'
 import CardButton from './cardButton'
+import { JSX } from 'react'
+import StarIcon from '@/icons/star'
+
+interface Icon {
+  className: string
+}
 
 interface Mock {
-  type: 'edit' | 'color' | 'favorite' | 'delete' | 'save'
+  type: 'color' | 'favorite' | 'delete' | 'save' | 'cancel'
   onClickButton: (type: Mock['type']) => void
-  icon: string
-  className: string
+  Icon?: ({ className }: Icon) => JSX.Element
+  iconClassName: string
 }
 
 const mock: Mock = {
   onClickButton: () => [],
-  icon: '/icons/paint.svg',
-  className: 'bg-gray-500',
+  Icon: StarIcon,
+  iconClassName: 'bg-gray-500',
   type: 'color',
 }
 
@@ -21,8 +27,8 @@ describe('CardButton', () => {
     await act(async () =>
       render(
         <CardButton
-          icon={mock.icon}
-          className={mock.className}
+          Icon={mock.Icon}
+          iconClassName={mock.iconClassName}
           type={mock.type}
           onClickButton={mock.onClickButton}
         />
@@ -34,18 +40,15 @@ describe('CardButton', () => {
     await act(async () =>
       render(
         <CardButton
-          icon={mock.icon}
-          className={mock.className}
+          Icon={mock.Icon}
+          iconClassName={mock.iconClassName}
           type={mock.type}
           onClickButton={mock.onClickButton}
         />
       )
     )
 
-    const content = screen.getByAltText('Main logo')
-
+    const content = screen.getByRole('button')
     expect(content).toBeInTheDocument()
-    expect(content).toHaveAttribute('src', mock.icon)
-    expect(content).toHaveClass(mock.className)
   })
 })

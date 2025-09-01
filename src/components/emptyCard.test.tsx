@@ -1,68 +1,44 @@
 import '@testing-library/jest-dom'
-import { act, render, screen } from '@testing-library/react'
-import Card from './card'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import EmptyCard from './emptyCard'
 import { Errors, Note } from '@/interfaces/noteInterfaces'
 import { Dispatch, SetStateAction } from 'react'
 import { randomUUID } from 'node:crypto'
 
 interface Mock {
-  token: string
-  note: Note
-  emptyNote: Note
+  message: string
   setNotes: Dispatch<SetStateAction<Note[]>>
   setErrors: Dispatch<SetStateAction<Errors['errors']>>
   setMessage: Dispatch<SetStateAction<string>>
-  setShowRestore: Dispatch<SetStateAction<{ visible: boolean; note: Note }>>
-  noteUpdate: (
+  noteStore: (
     note: Note,
     setNotes: Mock['setNotes'],
     setErrors: Mock['setErrors'],
-    setMessage: Mock['setMessage']
+    setMessage: Mock['setMessage'],
+    token: string
   ) => void
-  noteDestroy: (
-    id: string,
-    setNotes: Mock['setNotes'],
-    setMessage: Mock['setMessage']
-  ) => void
-  
+  token: string
 }
 
 const mock: Mock = {
-  token: randomUUID(),
-  note: {
-    id: '1',
-    title: 'Mock Title 1',
-    body: 'Mock body 1',
-    color: 'white',
-    favorited: false,
-  },
-  emptyNote: {
-    id: '',
-    title: '',
-    body: '',
-    color: 'white',
-    favorited: false,
-  },
+  message: '',
   setNotes: () => [],
   setErrors: () => [],
   setMessage: () => '',
-  setShowRestore: () => {},
-  noteUpdate: () => [],
-  noteDestroy: () => [],
+  noteStore: () => [],
+  token: randomUUID(),
 }
 
-describe('Card', () => {
+describe('EmptyCard', () => {
   it('renders', async () => {
     await act(async () =>
       render(
-        <Card
-          note={mock.note}
+        <EmptyCard
+          message={mock.message}
           setNotes={mock.setNotes}
           setErrors={mock.setErrors}
           setMessage={mock.setMessage}
-          setShowRestore={mock.setShowRestore}
-          noteDestroy={mock.noteDestroy}
-          noteUpdate={mock.noteUpdate}
+          noteStore={mock.noteStore}
           token={mock.token}
         />
       )
@@ -72,25 +48,26 @@ describe('Card', () => {
   it('renders a right content', async () => {
     await act(async () =>
       render(
-        <Card
-          note={mock.note}
+        <EmptyCard
+          message={mock.message}
           setNotes={mock.setNotes}
           setErrors={mock.setErrors}
           setMessage={mock.setMessage}
-          setShowRestore={mock.setShowRestore}
-          noteDestroy={mock.noteDestroy}
-          noteUpdate={mock.noteUpdate}
+          noteStore={mock.noteStore}
           token={mock.token}
         />
       )
     )
 
+    const inputParent = screen.getByRole('textbox').parentElement
+    if(inputParent) fireEvent.focus(inputParent)
+
     const content = screen.getAllByRole('textbox')
 
     expect(content[0]).toBeInTheDocument()
-    expect(content[0]).toHaveValue(mock.note.title)
-
+    expect(content[0]).toHaveAttribute('placeholder', 'Title')
+    
     expect(content[1]).toBeInTheDocument()
-    expect(content[1]).toHaveTextContent(mock.note.body)
+    expect(content[1]).toHaveAttribute('placeholder', 'Take a note...')
   })
 })

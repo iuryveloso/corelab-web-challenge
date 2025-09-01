@@ -1,14 +1,19 @@
 import '@testing-library/jest-dom'
 import { act, render, screen } from '@testing-library/react'
 import Input from './input'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, JSX } from 'react'
+import StarIcon from '@/icons/star'
+
+interface Icon {
+  className: string
+}
 
 interface Mock {
   id?: string
-  icon?: string
+  Icon?: ({ className }: Icon) => JSX.Element
   value: string
   type?: string
-  iconSize?: number
+  iconClassName?: string
   placeholder: string
   onCLickIcon?: () => void
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
@@ -16,10 +21,10 @@ interface Mock {
 
 const mock: Mock = {
   id: 'mockId',
-  icon: '/icons/eye.svg',
+  Icon: StarIcon,
   value: 'mockpassword',
   type: 'text',
-  iconSize: 28,
+  iconClassName: 'h-6 w-6',
   placeholder: 'Mock placeholder',
   onCLickIcon: () => [],
   onChange: () => []
@@ -31,10 +36,10 @@ describe('Input', () => {
       render(
         <Input
           id={mock.id}
-          icon={mock.icon}
+          Icon={mock.Icon}
           value={mock.value}
           type={mock.type}
-          iconSize={mock.iconSize}
+          iconClassName={mock.iconClassName}
           placeholder={mock.placeholder}
           onCLickIcon={mock.onCLickIcon}
           onChange={mock.onChange}
@@ -48,10 +53,10 @@ describe('Input', () => {
       render(
         <Input
           id={mock.id}
-          icon={mock.icon}
+          Icon={mock.Icon}
           value={mock.value}
           type={mock.type}
-          iconSize={mock.iconSize}
+          iconClassName={mock.iconClassName}
           placeholder={mock.placeholder}
           onCLickIcon={mock.onCLickIcon}
           onChange={mock.onChange}
@@ -65,6 +70,6 @@ describe('Input', () => {
     expect(content).toHaveAttribute('type', mock.type)
     expect(content).toHaveAttribute('id', mock.id)
     expect(content).toHaveAttribute('placeholder', mock.placeholder)
-    expect(content).toHaveClass('border-y-2 border-l-2 rounded-l-sm')
+    expect(content).toHaveClass('px-3 py-1 outline-none')
   })
 })
