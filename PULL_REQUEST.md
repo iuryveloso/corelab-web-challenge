@@ -15,6 +15,10 @@
 
 - **Page responsiveness**, adapting to desktop, tablet, and mobile screens.
 
+#### What's new
+
+- **User Authetication**, allowing the user to login, register and log out, besides get and update user data.
+
 ## Deliverables
 
 - The application was built with **Next.js 15**, designed to be used with an API developed in **AdonisJS 6** and **MySQL 8**.
@@ -25,6 +29,14 @@
 
 - **Docker containers** were utilized with **Docker Compose**, simplifying deployment to production.
 
+#### What's new
+
+- **Code Refactoring**, improving your readability and design.
+
+- **Updated layout**, according to the new layout required.
+
+- CI/CD workflow using **Github Actions**.
+
 ## Installation: 
 
 1. [Docker](https://www.docker.com/) must be installed on your system.
@@ -33,6 +45,6 @@
 
 3. Create a copy of the ```.env.example``` file in the app's root folder. Rename it to ```.env``` and change the necessary information.
 
-4. Open the terminal and run the command ```docker compose up -d```.
+4. Open the terminal and run the command`docker compose build web` and then `docker compose up -d`.
 
 5. Finally, open your browser and go to http://localhost:3000. Enjoy!
